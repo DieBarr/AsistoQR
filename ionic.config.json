@@ -1,0 +1,7 @@
+{
+  "name": "asistoQR",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
