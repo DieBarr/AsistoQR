@@ -3,8 +3,14 @@
 
 /** Ionic CSS Variables **/
 :root {
+  /* Set the background of the entire app */
+  --ion-background-color: #eeeeee;
+  --ion-toolbar-background:  linear-gradient(  to bottom right,#1960d2,#104090, #004080);
+  --ion-toolbar-color: #ffffff;
+  --ion-tab-bar-background: #cccccc;
+  --ion-tab-bar-color: #666666;
   /** primary **/
-  --ion-color-primary: #3880ff;
+  --ion-color-primary: #1960d2;
   --ion-color-primary-rgb: 56, 128, 255;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
