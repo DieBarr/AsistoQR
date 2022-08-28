@@ -2,10 +2,35 @@
 // http://ionicframework.com/docs/theming/
 
 /** Ionic CSS Variables **/
+ion-segment {
+  --background:#cccccc;
+}
+ion-segment-button {
+
+  --indicator-color: var(--ion-color-primary);
+}
+.ios{
+
+ion-segment {
+  --background: #cccccc}
+ion-segment-button {
+  --color:#272727;
+  --indicator-color: #dddddd;
+  --background-focused:#eeeeee;
+  --color-checked:var(--ion-color-primary);
+  --background-focused-opacity:0.5;
+}
+
+}
+
 :root {
+    --ion-background-color: #eeeeee;
+  --ion-toolbar-background:  linear-gradient(  to bottom right,#1960d2,#104090, #004080);
+  --ion-toolbar-color: #ffffff;
+
   /** primary **/
-  --ion-color-primary: #3880ff;
-  --ion-color-primary-rgb: 56, 128, 255;
+  --ion-color-primary: #1960d2;
+  --ion-color-primary-rgb: 25, 96, 210;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
   --ion-color-primary-shade: #3171e0;
