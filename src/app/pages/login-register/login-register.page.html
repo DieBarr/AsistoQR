@@ -23,13 +23,13 @@
 <ion-col>
 <ion-item>
   <ion-label position="floating">Usuario</ion-label>
-  <ion-input [(ngModel)]="usuario"></ion-input>
+  <ion-input [(ngModel)]="user"></ion-input>
  </ion-item>
 <ion-item>
  <ion-label position="floating">Contraseña</ion-label>
-  <ion-input type="password" [(ngModel)]="clave"></ion-input>
+  <ion-input type="password" [(ngModel)]="passwd"></ion-input>
  </ion-item>
- <ion-button expand="block"  (click)="pasarDatos()" [routerLink]="['/home-teacher']" >Ingresar</ion-button>
+ <ion-button expand="block" (click)="sendData()"  >Ingresar</ion-button>
 
 <ion-text color="dark">
   <p> Olvidaste tu contraseña? restablecela <ion-text color="primary"><a [routerLink]="['/restore-passwd']" style="text-decoration-line: underline;">aquí</a></ion-text>!</p>
