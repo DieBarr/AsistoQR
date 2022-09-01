@@ -1,9 +1,47 @@
-<ion-header>
+<ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>HomeStudent</ion-title>
+    <ion-buttons slot="start">
+
+    </ion-buttons>
+    <ion-title>
+      Estudiante
+    </ion-title>
   </ion-toolbar>
-</ion-header>
+
+ </ion-header>
 
 <ion-content>
+  <ion-router-outlet></ion-router-outlet>
 
-</ion-content>
+
+
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="courses">
+
+
+            <ion-icon name="school-outline"></ion-icon>
+
+       <ion-label>Cursos</ion-label>
+    </ion-tab-button>
+    <ion-tab-button tab="scanner">
+
+
+<ion-icon name="qr-code-outline"></ion-icon>
+       <ion-label>Scanear</ion-label>
+    </ion-tab-button>
+
+  <ion-tab-button tab="settings">
+       <ion-icon name="settings-outline"></ion-icon>
+       <ion-label>Opciones</ion-label>
+    </ion-tab-button>
+
+
+  </ion-tab-bar>
+
+</ion-tabs>
+
+
+
+
+ </ion-content>

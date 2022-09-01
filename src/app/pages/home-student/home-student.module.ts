@@ -6,6 +6,13 @@ import { IonicModule } from '@ionic/angular';
 
 import { HomeStudentPageRoutingModule } from './home-student-routing.module';
 
+import { CoursesComponent } from 'src/app/components/courses/courses.component';
+
+import { ScannerComponent } from 'src/app/components/scanner/scanner.component';
+
+import { SettingsStudentComponent } from 'src/app/components/settings-student/settings-student.component';
+
+
 import { HomeStudentPage } from './home-student.page';
 
 @NgModule({
@@ -15,6 +22,6 @@ import { HomeStudentPage } from './home-student.page';
     IonicModule,
     HomeStudentPageRoutingModule
   ],
-  declarations: [HomeStudentPage]
+  declarations: [HomeStudentPage,ScannerComponent,CoursesComponent,SettingsStudentComponent]
 })
 export class HomeStudentPageModule {}

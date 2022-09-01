@@ -1,0 +1,38 @@
+<ion-content>
+<ion-card>
+  <ion-card-header color="primary">
+    <ion-card-title>Horario</ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+<ion-accordion-group expand="inset">
+  <ion-accordion [value]="b.id" *ngFor="let b of days">
+    <ion-item slot="header" >
+      <ion-label >{{b.name}}</ion-label>
+    </ion-item>
+    <div [value]="a.id" *ngFor="let a of courses" class="ion-padding" slot="content">
+     {{a.hora}} {{a.name}}
+    </div>
+  </ion-accordion>
+</ion-accordion-group>
+  </ion-card-content>
+</ion-card>
+<ion-card>
+<ion-card-header color="primary">
+
+  <ion-card-title>Asignaturas inscritas</ion-card-title>
+</ion-card-header>
+
+<ion-card-content>
+
+
+<ion-list  [value]="a.id" *ngFor="let a of courses">
+  <ion-item [routerLink]="['/report-student']" >
+    <ion-label >{{a.name}}
+ <p color="secondary">{{a.abr}}</p>
+    </ion-label>
+  </ion-item>
+</ion-list>
+</ion-card-content>
+</ion-card>
+</ion-content>
