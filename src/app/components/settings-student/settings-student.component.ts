@@ -7,14 +7,14 @@ import { ActivatedRoute, Router} from '@angular/router';
   styleUrls: ['./settings-student.component.scss'],
 })
 export class SettingsStudentComponent implements OnInit {
-user: string = "";
-  mail: string = "";
+names: string = "";
+  email: string = "";
 
   constructor(private router: Router, private activedRouter: ActivatedRoute) {
 this.activedRouter.queryParams.subscribe(params =>{
       if(this.router.getCurrentNavigation().extras.state){
-        this.user = this.router.getCurrentNavigation().extras.state.email;
-        this.mail = this.router.getCurrentNavigation().extras.state.names;
+        this.email = this.router.getCurrentNavigation().extras.state.email;
+        this.names = this.router.getCurrentNavigation().extras.state.names;
 
       }
 })

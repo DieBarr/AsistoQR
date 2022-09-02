@@ -1,42 +1,21 @@
+<ion-content>
+
 <ion-list>
   <ion-item>
-    <ion-label>
-      Item
-    </ion-label>
+<ion-avatar slot="start">
+    <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+</ion-avatar>
+<ion-label>
+Bienvenid@  {{names}}
+
+</ion-label>
   </ion-item>
-  <ion-item lines="none">
-    <ion-label>
-      No Lines Item
-    </ion-label>
-  </ion-item>
-
-  <ion-item>
-    <ion-label class="ion-text-wrap">
-    Multiline text that should wrap when it is too long
-    to fit on one line in the item.
-    </ion-label>
-  </ion-item>
-
-  <ion-item>
-    <ion-label class="ion-text-wrap">
-      <ion-text color="primary">
-
-{{n}}
-      </ion-text>
-      <p>Paragraph line 1</p>
-      <ion-text color="secondary">
-        <p>Paragraph line 2 secondary</p>
-
-{{e}}
-      </ion-text>
-    </ion-label>
-  </ion-item>
-
-  <ion-item lines="full">
-    <ion-label>
+  <ion-item [routerLink]="['/login-register']" lines="full">
+    <ion-label   >
       Cerrar Sesión
     </ion-label>
-<ion-icon name="log-out-outline"></ion-icon>
+<ion-icon  name="log-out-outline"></ion-icon>
   </ion-item>
 
 </ion-list>
+</ion-content>

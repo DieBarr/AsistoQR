@@ -28,10 +28,11 @@
 
 
 <ion-list   *ngFor="let a of courses">
-  <ion-item [routerLink]="['/report-student']" >
+  <ion-item (click)="goToCourse(a.id)"  >
     <ion-label >{{a.name}}
- <p color="secondary">{{a.abr}}</p>
+ <p color="secondary">{{a.abr}} </p>
     </ion-label>
+<ion-chip color=success>{{a.ass | percent}}</ion-chip>
   </ion-item>
 </ion-list>
 </ion-card-content>

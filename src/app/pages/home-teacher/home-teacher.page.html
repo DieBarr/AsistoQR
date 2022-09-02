@@ -1,7 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-
     </ion-buttons>
     <ion-title>
       Profesor
@@ -13,6 +12,7 @@
 <ion-content>
   <ion-router-outlet></ion-router-outlet>
 
+  <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
 
 
 <ion-tabs>
@@ -25,7 +25,7 @@
        <ion-label>Secciones</ion-label>
     </ion-tab-button>
 
-  <ion-tab-button tab="settings">
+  <ion-tab-button (click)="sendDataSettings()">
        <ion-icon name="settings-outline"></ion-icon>
        <ion-label>Opciones</ion-label>
     </ion-tab-button>

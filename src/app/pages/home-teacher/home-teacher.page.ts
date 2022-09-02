@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute,NavigationExtras } from '@angular/router';
 
 @Component({
   selector: 'app-home-teacher',
@@ -7,20 +7,37 @@ import { Router } from '@angular/router';
   styleUrls: ['./home-teacher.page.scss'],
 })
 export class HomeTeacherPage implements OnInit {
+ names: string = "";
+  email: string = "";
 
-  constructor(private router: Router) {
+
+  constructor(private router: Router, private activedRouter: ActivatedRoute) {
+
+    this.activedRouter.queryParams.subscribe(params =>{
+      if(this.router.getCurrentNavigation().extras.state){
+        this.names = this.router.getCurrentNavigation().extras.state.names;
+        this.email = this.router.getCurrentNavigation().extras.state.email;
+
+      }
+         })
+  }
 
 
-    this.router.navigate(['home-teacher/sections']);
+ sendDataSettings(){
 
-   }
+ let navigationExtras: NavigationExtras = {
+      state: {
+        names: this.names,
+
+        email: this.email
+      }
+
+    }
+
+      this.router.navigate(['home-teacher/settings'],navigationExtras);
+  }
 
   ngOnInit() {
-  }
-  segmentChanged($event){
-    let direccion = $event.detail.value;
-    //console.log(direccion);
-    this.router.navigate(['home-teacher/' + direccion]);
   }
 
 }

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AlertController, AngularDelegate, ToastController } from '@ionic/angular';
-
 import { NavigationExtras, Router } from '@angular/router';
 @Component({
   selector: 'app-login',
@@ -48,7 +47,7 @@ export class LoginComponent implements OnInit {
 
     };
 
- this.router.navigate(['home-teacher'], navigationExtras);
+ this.router.navigate(['home-teacher/sections'], navigationExtras);
 
     }
 

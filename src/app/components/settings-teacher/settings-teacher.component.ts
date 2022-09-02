@@ -9,14 +9,14 @@ import { ActivatedRoute, Router} from '@angular/router';
 export class SettingsTeacherComponent implements OnInit {
 
 
-    e: string = "";
+    email: string ;
 
-    n: string = "";
+    names: string;
   constructor(private activedRouter: ActivatedRoute,private router: Router) {
    this.activedRouter.queryParams.subscribe(params =>{
       if(this.router.getCurrentNavigation().extras.state){
-        this.n = this.router.getCurrentNavigation().extras.state.name;
-        this.e = this.router.getCurrentNavigation().extras.state.email;
+        this.names = this.router.getCurrentNavigation().extras.state.names;
+        this.email = this.router.getCurrentNavigation().extras.state.email;
 
       }
     })
