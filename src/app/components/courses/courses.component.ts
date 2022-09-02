@@ -1,14 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 
-import { NavigationExtras, Router } from '@angular/router';
+import { NavigationExtras, Router, ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-courses',
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.scss'],
 })
 export class CoursesComponent implements OnInit {
+  names:string;
+  email:string;
   courseName: string = "bruh";
-  constructor(private router: Router) { }
+  constructor(private router: Router,private activedRouter: ActivatedRoute) {
+
+this.activedRouter.queryParams.subscribe(params =>{
+      if(this.router.getCurrentNavigation().extras.state){
+        this.names = this.router.getCurrentNavigation().extras.state.names;
+        this.email = this.router.getCurrentNavigation().extras.state.email;
+
+      }
+})
+
+
+  }
   courses: any[] = [
   {
     id: 1,
@@ -56,18 +69,6 @@ export class CoursesComponent implements OnInit {
 
 
 ]
-
-  sendData() {
-    let navigationExtras: NavigationExtras = {
-      state: {
-        nme: this.courseName
-      }
-
-    }
-
-    //this.router.navigate(['/report-student'], navigationExtras);
-  }
-
-  ngOnInit() {}
+   ngOnInit() {}
 
 }

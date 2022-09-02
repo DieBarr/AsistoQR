@@ -10,7 +10,6 @@ import { NavigationExtras, Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-
   email: string = "";
   names: string="Juan ";
 
@@ -35,24 +34,39 @@ export class LoginComponent implements OnInit {
   constructor( public toastController: ToastController, private router: Router, private alertController: AlertController) { }
 
   sendData() {
-    let navigationExtras: NavigationExtras = {
-      state: {
-        name: this.names
-      }
-    }
 
     if (this.email == this.users[0].email && this.password == this.users[0].password){
+      this.email = this.users[0].email;
 
       this.names = this.users[0].names;
-      this.router.navigate(['home-teacher'], navigationExtras);
+  let navigationExtras: NavigationExtras = {
+      state: {
+        names: this.names,
+
+        email: this.email
+      }
+
+    };
+
+ this.router.navigate(['home-teacher'], navigationExtras);
 
     }
+
+
+
     else if (this.email == this.users[1].email && this.password == this.users[1].password) {
+ this.email = this.users[1].email;
+ this.names = this.users[1].names;
+ let navigationExtras: NavigationExtras = {
+      state: {
+        names: this.names,
 
+        email: this.email
+      }
 
-      this.names = this.users[1].names;
-      this.router.navigate(['home-student'], navigationExtras);
+    };
 
+      this.router.navigate(['home-student/courses'],navigationExtras);
     }
     else {
       console.log("hola")

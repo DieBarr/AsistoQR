@@ -1,23 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router} from '@angular/router';
 @Component({
   selector: 'app-settings-student',
   templateUrl: './settings-student.component.html',
   styleUrls: ['./settings-student.component.scss'],
 })
 export class SettingsStudentComponent implements OnInit {
+user: string = "";
+  mail: string = "";
 
-    names: string = "Juanito";
   constructor(private router: Router, private activedRouter: ActivatedRoute) {
-    this.activedRouter.queryParams.subscribe(params =>{
+this.activedRouter.queryParams.subscribe(params =>{
       if(this.router.getCurrentNavigation().extras.state){
-        this.names = this.router.getCurrentNavigation().extras.state.name;
+        this.user = this.router.getCurrentNavigation().extras.state.email;
+        this.mail = this.router.getCurrentNavigation().extras.state.names;
 
       }
-    })
-
-  }
+})
+   }
 
   ngOnInit() {}
 
