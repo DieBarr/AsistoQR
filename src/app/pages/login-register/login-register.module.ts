@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
- import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { LoginRegisterPageRoutingModule } from './login-register-routing.module';
 import {LoginComponent} from 'src/app/components/login/login.component';
 
@@ -16,9 +15,9 @@ import { LoginRegisterPage } from './login-register.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    LoginRegisterPageRoutingModule,
-    MatProgressSpinnerModule
+    LoginRegisterPageRoutingModule
   ],
+
   declarations: [LoginRegisterPage,LoginComponent,RegisterComponent]
 })
 export class LoginRegisterPageModule {}

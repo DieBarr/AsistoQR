@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
- import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { HomeTeacherPageRoutingModule } from './home-teacher-routing.module';
 
 import { HomeTeacherPage } from './home-teacher.page';
@@ -16,9 +15,7 @@ import { SettingsTeacherComponent } from 'src/app/components/settings-teacher/se
     CommonModule,
     FormsModule,
     IonicModule,
-    HomeTeacherPageRoutingModule,
-
-    MatProgressSpinnerModule
+    HomeTeacherPageRoutingModule
   ],
   declarations: [HomeTeacherPage,SectionsTeacherComponent,SettingsTeacherComponent]
 })
