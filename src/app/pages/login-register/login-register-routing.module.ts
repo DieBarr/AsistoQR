@@ -5,7 +5,6 @@ import { LoginRegisterPage } from './login-register.page';
 
 import { LoginComponent } from 'src/app/components/login/login.component';
 
-import { RegisterComponent } from 'src/app/components/register/register.component';
 const routes: Routes = [
   {
     path: '',
@@ -16,13 +15,7 @@ const routes: Routes = [
         path:'login',
         component: LoginComponent
 
-      },
- {
-        path:'register',
-        component: RegisterComponent
-
       }
-
           ]
 
   }
