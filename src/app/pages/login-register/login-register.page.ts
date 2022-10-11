@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationExtras, Router } from '@angular/router';
-import { AlertController, AngularDelegate, ToastController } from '@ionic/angular';
-
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-login-register',
   templateUrl: './login-register.page.html',
