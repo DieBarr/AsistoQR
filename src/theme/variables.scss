@@ -2,8 +2,26 @@
 // http://ionicframework.com/docs/theming/
 
 /** Ionic CSS Variables **/
+@import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+ion-title {
+
+  --color:#272727;
+
+font-weight: 650;
+}
 ion-segment {
   --background:#cccccc;
+}
+ion-button {
+  --border-radius: 10px;
+
+
+}
+ion-card{
+
+  border-radius: 10px;
+
+
 }
 ion-segment-button {
 
@@ -24,12 +42,14 @@ ion-segment-button {
 }
 
 :root {
+  --ion-font-family:'Jost', sans-serif;
     --ion-background-color: #E4EDFF;
+    --ion-color: #212121;
   --ion-toolbar-background: #B0CCFF;
   --ion-toolbar-color: #121212;
 
   /** primary **/
-  --ion-color-primary: #1960d2;
+  --ion-color-primary: #648ccb;
   --ion-color-primary-rgb: 25, 96, 210;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
@@ -53,7 +73,7 @@ ion-segment-button {
   --ion-color-tertiary-tint: #6370ff;
 
   /** success **/
-  --ion-color-success: #2dd36f;
+  --ion-color-success: #64cbc6;
   --ion-color-success-rgb: 45, 211, 111;
   --ion-color-success-contrast: #ffffff;
   --ion-color-success-contrast-rgb: 255, 255, 255;
