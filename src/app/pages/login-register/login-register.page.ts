@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { DataBaseService} from '../../services/data-base.service';
 @Component({
   selector: 'app-login-register',
   templateUrl: './login-register.page.html',
@@ -8,12 +7,10 @@ import { DataBaseService} from '../../services/data-base.service';
 })
 export class LoginRegisterPage implements OnInit {
 
-  constructor(private router: Router, private DBservice: DataBaseService) {
+  constructor(private router: Router) {
 
 
     this.router.navigate(['login-register/login']);
   }
-  ngOnInit() {
-    this.DBservice.dbState().subscribe();}
-
+  ngOnInit(){}
 }

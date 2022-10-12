@@ -2,7 +2,9 @@
 <ion-card>
   <ion-card-header color="primary">
     <ion-card-title>Horario {{names}}</ion-card-title>
+
   </ion-card-header>
+
   <ion-card-content>
 <ion-accordion-group expand="inset">
   <ion-accordion [value]="b.id" *ngFor="let b of days">
@@ -18,15 +20,17 @@
 </ion-card>
 <ion-card>
 <ion-card-header color="primary">
+
   <ion-card-title>Asignaturas inscritas</ion-card-title>
 </ion-card-header>
+
 <ion-card-content>
-<ion-list   *ngFor="let a of courses">
-  <ion-item (click)="goToCourse(a.id)"  >
-    <ion-label >{{a.name}}
- <p color="secondary">{{a.abr}} </p>
+
+<ion-list *ngFor="let a of asignaturas" >
+  <ion-item>
+    <ion-label >{{a.nombre}}
+ <p color="secondary">{{a.sigla}} </p>
     </ion-label>
-<ion-chip color=success>{{a.ass | percent}}</ion-chip>
   </ion-item>
 </ion-list>
 </ion-card-content>

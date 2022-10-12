@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { NavigationExtras, Router, ActivatedRoute } from '@angular/router';
+import { DataBaseService} from '../../services/data-base.service';
 @Component({
   selector: 'app-courses',
   templateUrl: './courses.component.html',
@@ -10,8 +11,16 @@ export class CoursesComponent implements OnInit {
   names:string;
   email:string;
   name:string;
+  asignaturas:any = [
+
+   {
+      id: '',
+      nombre: '',
+      sigla: ''
+    }
+]
   courseName: string = "bruh";
-  constructor(private router: Router,private activedRouter: ActivatedRoute) {
+  constructor(private router: Router,private activedRouter: ActivatedRoute, private dbService:  DataBaseService) {
 
 this.activedRouter.queryParams.subscribe(params =>{
       if(this.router.getCurrentNavigation().extras.state){
@@ -87,6 +96,16 @@ this.activedRouter.queryParams.subscribe(params =>{
     console.log(name)
   this.router.navigate(['/report-student',navigationExtras])
   }
-   ngOnInit() {}
+   ngOnInit() {
+
+  this.dbService.dbState().subscribe(res=>{
+      if(res){
+        this.dbService.fetchAsignaturas().subscribe(item=>{
+          this.asignaturas = item;
+        })
+      }
+    })
+
+   }
 
 }

@@ -1,80 +1,64 @@
 import { Component, OnInit } from '@angular/core';
-
-import { AlertController, AngularDelegate, ToastController } from '@ionic/angular';
-import { NavigationExtras, Router } from '@angular/router';
+import{DataBaseService}from '../../services/data-base.service';
+import { ToastController } from '@ionic/angular';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-
-  email: string = "";
-  names: string="Juan ";
-
-  password: string="";
-
-
-  users: any[] = [
-    {
-      email: 'ju.arcoiris@profesor.duoc.cl',
-      password: '123456',
-      names:'Juanito Arcoiris'
-    },
-    {
-      email: 'co.fulanito@duocuc.cl',
-      password: '123456',
-      names:'Cosme Fulanito'
+constructor( public toastController: ToastController, private router: Router,private dbService: DataBaseService) { }
+email: string ='';
+password: string ='';
+  users:any = [
+   {
+      id: '',
+      nombre: '',
+      apellido: '',
+      correo:'',
+      rol_id:'',
+     clave:''
     }
-
 ]
 
-
-  constructor( public toastController: ToastController, private router: Router, private alertController: AlertController) { }
-
   sendData() {
+    for(let u in this.users){
+      if(this.users[u].correo = this.email && this.users[u].clave ==this.password && this.users[u].rol_id ==1 ){
+        this.router.navigate(['home-teacher/sections']);
 
-    if (this.email == this.users[0].email && this.password == this.users[0].password){
-      this.email = this.users[0].email;
-
-      this.names = this.users[0].names;
-  let navigationExtras: NavigationExtras = {
-      state: {
-        names: this.names,
-
-        email: this.email
       }
+      else if(this.users[u].correo = this.email && this.users[u].clave ==this.password && this.users[u].rol_id ==2 ){
 
-    };
-
- this.router.navigate(['home-teacher/sections'], navigationExtras);
-
-    }
-
-
-
-    else if (this.email == this.users[1].email && this.password == this.users[1].password) {
- this.email = this.users[1].email;
- this.names = this.users[1].names;
- let navigationExtras: NavigationExtras = {
-      state: {
-        names: this.names,
-
-        email: this.email
+        this.router.navigate(['home-student/courses']);
       }
-
-    };
-
-      this.router.navigate(['home-student/courses'],navigationExtras);
-    }
-    else {
-      console.log("hola")
-    }
-
-
+      else {
+        this.presentToast("Correo o clave incorrectos.");
+  }
+}
   }
 
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.dbService.dbState().subscribe(res =>{
+      if(res){
+        this.dbService.fetchUsers().subscribe(item=>{
+          this.users = item;
+        }
+        )
+      }
+    }
+    )
+  }
+
+  async presentToast(msj: string) {
+    const toast = await this.toastController.create({
+      message: msj,
+      duration: 3000,
+      icon: 'globe'
+    });
+
+    await toast.present();
+  }
 
 }
