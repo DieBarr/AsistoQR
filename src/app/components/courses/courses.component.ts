@@ -100,7 +100,7 @@ this.activedRouter.queryParams.subscribe(params =>{
 
   this.dbService.dbState().subscribe(res=>{
       if(res){
-        this.dbService.fetchAsignaturas().subscribe(item=>{
+        this.dbService.fetchSubjects().subscribe(item=>{
           this.asignaturas = item;
         })
       }
