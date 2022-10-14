@@ -1,17 +1,6 @@
 <ion-content>
+<ion-button (click)="startScan()" fill="solid">Scanear código QR</ion-button>
 
-<ion-grid>
-  <ion-col>
 
-  <ion-row>
-  </ion-row>
-  <ion-row>
-  <img src="assets/qr.gif">
-
-  </ion-row>
-<ion-row>
-  </ion-row>
-
-  </ion-col>
-</ion-grid>
+<ion-item *ngIf="scannedResult"></ion-item>
 </ion-content>

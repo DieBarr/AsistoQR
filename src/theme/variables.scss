@@ -27,6 +27,10 @@ ion-segment-button {
 
   --indicator-color: var(--ion-color-primary);
 }
+body.scanner-active {
+  --background: transparent;
+  --ion-background-color: transparent;
+}
 .ios{
 
 ion-segment {

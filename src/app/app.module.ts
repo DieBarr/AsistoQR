@@ -11,8 +11,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StatusBar } from '@awesome-cordova-plugins/status-bar/ngx';
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, BrowserAnimationsModule, QRCodeModule],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, StatusBar, SQLite, Camera  ],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, BrowserAnimationsModule, QRCodeModule ],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, StatusBar, SQLite, Camera ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
