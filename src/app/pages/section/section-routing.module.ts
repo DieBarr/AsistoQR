@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ClassTeacherComponent } from 'src/app/components/class-teacher/class-teacher.component';
 import { ClassesTeacherComponent } from 'src/app/components/classes-teacher/classes-teacher.component';
 
+
 import { SectionPage } from './section.page';
 
 const routes: Routes = [

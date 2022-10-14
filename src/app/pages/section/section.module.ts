@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
-
+import { QRCodeModule } from 'angularx-qrcode';
 import { SectionPageRoutingModule } from './section-routing.module';
 
 import { SectionPage } from './section.page';
@@ -15,7 +15,8 @@ import { ClassesTeacherComponent } from 'src/app/components/classes-teacher/clas
     CommonModule,
     FormsModule,
     IonicModule,
-    SectionPageRoutingModule
+    SectionPageRoutingModule,
+      QRCodeModule
   ],
   declarations: [SectionPage,ClassTeacherComponent,ClassesTeacherComponent]
 })

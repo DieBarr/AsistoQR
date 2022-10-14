@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router} from '@angular/router';
 import { AlertController } from '@ionic/angular';
 @Component({
   selector: 'app-class-teacher',
@@ -8,7 +9,7 @@ import { AlertController } from '@ionic/angular';
 export class ClassTeacherComponent implements OnInit {
   handlerMessage = '';
   roleMessage = '';
-  constructor(private alertController: AlertController) {
+  constructor(private alertController: AlertController, private router : Router) {
 
 
   }
@@ -29,7 +30,7 @@ export class ClassTeacherComponent implements OnInit {
           text: 'OK',
           role: 'confirm',
           handler: () => {
-            this.handlerMessage = 'Alert confirmed';
+            this.router.navigate(['section/qr']);
           },
         },
       ],
