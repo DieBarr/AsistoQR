@@ -11,35 +11,50 @@ export class LoginComponent implements OnInit {
 constructor( public toastController: ToastController, private router: Router,private dbService: DataBaseService) { }
 email: string ='';
 password: string ='';
+
   users:any = [
    {
       id: '',
       nombre: '',
-      apellido: '',
+     clave:'',
       correo:'',
-      rol_id:'',
-     clave:''
+     rut:'',
+      rol:''
+
     }
 ]
 
   sendData() {
+    let counter: number =0;
+    this.users.forEach(count);
+    function count(){
+counter+=1;
+
+    }
     for(let u in this.users){
-      if(this.users[u].correo = this.email && this.users[u].clave ==this.password && this.users[u].rol_id ==1 ){
+
+
+      if(  this.users[u].nombre == this.email && this.users[u].clave ==this.password){
+        if(this.users[u].rol == 1){
         this.router.navigate(['home-teacher/sections']);
-
-      }
-      else if(this.users[u].correo = this.email && this.users[u].clave ==this.password && this.users[u].rol_id ==2 ){
-
+        }
+      else if( this.users[u].rol == 2){
         this.router.navigate(['home-student/courses']);
+      }}else {
+        counter -=1;
       }
-      else {
-        this.presentToast("Correo o clave incorrectos.");
-  }
-}
-  }
 
+
+      if(counter ==0){
+      this.presentToast("Usuario o contraseña incorrectos.");
+
+      }
+       }
+
+  }
 
   ngOnInit() {
+
     this.dbService.dbState().subscribe(res =>{
       if(res){
         this.dbService.fetchUsers().subscribe(item=>{
@@ -49,6 +64,8 @@ password: string ='';
       }
     }
     )
+
+
   }
 
   async presentToast(msj: string) {

@@ -13,7 +13,7 @@ export class DataBaseService {
   public database: SQLiteObject;
   private isDBReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
   roleTable: string = "CREATE TABLE IF NOT EXISTS rol(id_rol INTEGER PRIMARY KEY AUTOINCREMENT, nombre_rol VARCHAR(32) NOT NULL);";
-  userTable: string = "CREATE TABLE IF NOT EXISTS usuario(id_usuario INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(32) NOT NULL, apellidos VARCHAR(32), correo VARCHAR(32), clave VARCHAR(32) NOT NULL, id_rol INTEGER, FOREIGN KEY(id_rol) REFERENCES rol(id_rol), rut VARCHAR(10);";
+  userTable: string = "CREATE TABLE IF NOT EXISTS usuario(id_usuario INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(32) NOT NULL, correo VARCHAR(32), clave VARCHAR(32) NOT NULL,rol_id INTEGER,  rut VARCHAR(10) NOT NULL, FOREIGN KEY(rol_id)  REFERENCES rol(id_rol));";
   subjectTable: string = "CREATE TABLE IF NOT EXISTS asignatura(id_asignatura INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(128), sigla VARCHAR(10) NOT NULL);";
   sectionTable: string = "CREATE TABLE IF NOT EXISTS seccion(id_seccion INTEGER PRIMARY KEY autoincrement, sigla VARCHAR(10) NOT NULL);";
   subjSectTable: string = "CREATE TABLE IF NOT EXISTS asig_secc(id_asig_secc INTEGER PRIMARY KEY autoincrement, FOREIGN KEY(asignatura_id) REFERENCES asignatura(id_asignatura) , FOREIGN KEY(seccion_id) REFERENCES seccion(id_seccion), FOREIGN KEY(usuario_id) REFERENCES usuario(id_usuario));";
@@ -24,7 +24,6 @@ export class DataBaseService {
 
   list = new BehaviorSubject([]);
 
-  list2 = new BehaviorSubject([]);
   constructor(private sqlite: SQLite, private toastController: ToastController, private platform: Platform,private alertController: AlertController) {
 this.createDB();
 
@@ -72,12 +71,12 @@ async presentAlert(msj:string) {
       await this.database.executeSql("INSERT or IGNORE INTO asignatura (nombre,sigla) VALUES (?,?);",['Diseño de prototipos','PGY4237'] );
       await this.database.executeSql("INSERT or IGNORE INTO asignatura (nombre,sigla) VALUES (?,?);",['Programación de aplicaciones móviles','PGY4121'] );
       // roles
-      await this.database.executeSql("INSERT or IGNORE INTO rol(nombre_rol) VALUES (?,?);",['profesor'] );
-      await this.database.executeSql("INSERT or IGNORE INTO rol(nombre_rol) VALUES (?,?);",['alumno'] );
+      await this.database.executeSql("INSERT or IGNORE INTO rol(nombre_rol,id_rol) VALUES (?,?);",['profesor',1] );
+      await this.database.executeSql("INSERT or IGNORE INTO rol(nombre_rol,id_rol) VALUES (?,?);",['alumno',2] );
       // users
 
-      await this.database.executeSql("INSERT or IGNORE INTO user (nombre,apellidos,rut,clave,id_ril,correo) VALUES (?,?,?,?,?,?);",['Foo','Bar','77.777.777-7','1234',1,'foo.bar@example.com'] );
-      await this.database.executeSql("INSERT or IGNORE INTO user (nombre,apellidos,rut,clave,id_rol,correo) VALUES (?,?,?,?,?,?);",['John','Doe','99.999.999-0','4321',2,"j.doe@example.com"] );
+      await this.database.executeSql("INSERT or IGNORE INTO usuario (nombre,rut,clave,rol_id,correo) VALUES (?,?,?,?,?);",['f.bar','77.777.777-7','1234',1,'foo.bar@example.com'] );
+      await this.database.executeSql("INSERT or IGNORE INTO usuario (nombre,rut,clave,rol_id,correo) VALUES (?,?,?,?,?);",['j.doe','99.999.999-0','4321',2,"j.doe@example.com"] );
 
       this.searchSubjects();
 
@@ -113,7 +112,7 @@ fetchSubjects(): Observable<Asignaturas[]> {
   }
 fetchUsers(): Observable<Usuario[]> {
 
-    return this.list2.asObservable();
+    return this.list.asObservable();
   }
 
 
@@ -145,15 +144,14 @@ async searchUsers() {
           items.push({
             id: res.rows.item(i).id_usuario,
             nombre: res.rows.item(i).nombre,
-            apellidos: res.rows.item(i).apellidos,
             clave: res.rows.item(i).clave,
             correo: res.rows.item(i).correo,
             rut: res.rows.item(i).rut,
-            rol:res.rows.item(i).rol_id
+            rol: res.rows.item(i).rol_id
           })
         }
       }
-      this.list2.next(items);
+      this.list.next(items);
     })
   }
 }
