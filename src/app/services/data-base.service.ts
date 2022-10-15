@@ -13,7 +13,7 @@ export class DataBaseService {
   public database: SQLiteObject;
   private isDBReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
   roleTable: string = "CREATE TABLE IF NOT EXISTS rol(id_rol INTEGER PRIMARY KEY AUTOINCREMENT, nombre_rol VARCHAR(32) NOT NULL);";
-  userTable: string = "CREATE TABLE IF NOT EXISTS usuario(id_usuario INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(32) NOT NULL, correo VARCHAR(32), clave VARCHAR(32) NOT NULL,rol_id INTEGER,  rut VARCHAR(10) NOT NULL, FOREIGN KEY(rol_id)  REFERENCES rol(id_rol));";
+  userTable: string = "CREATE TABLE IF NOT EXISTS usuario(id_usuario INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(32) NOT NULL, correo VARCHAR(32), clave VARCHAR(32) NOT NULL,rol_id INTEGER,  rut VARCHAR(10) , FOREIGN KEY(rol_id)  REFERENCES rol(id_rol));";
   subjectTable: string = "CREATE TABLE IF NOT EXISTS asignatura(id_asignatura INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(128), sigla VARCHAR(10) NOT NULL);";
   sectionTable: string = "CREATE TABLE IF NOT EXISTS seccion(id_seccion INTEGER PRIMARY KEY autoincrement, sigla VARCHAR(10) NOT NULL);";
   subjSectTable: string = "CREATE TABLE IF NOT EXISTS asig_secc(id_asig_secc INTEGER PRIMARY KEY autoincrement, FOREIGN KEY(asignatura_id) REFERENCES asignatura(id_asignatura) , FOREIGN KEY(seccion_id) REFERENCES seccion(id_seccion), FOREIGN KEY(usuario_id) REFERENCES usuario(id_usuario));";
@@ -22,7 +22,8 @@ export class DataBaseService {
   detailAssistTable: string = "CREATE TABLE IF NOT EXISTS detalle_asist(id_detalle INTEGER PRIMARY KEY autoincrement,status VARCHAR(15), FOREIGN KEY(asistencia_id) REFERENCES asistencia(id_asistencia) , FOREIGN KEY(usuario_id) REFERENCES usuario(id_usuario));";
 
 
-  list = new BehaviorSubject([]);
+  listSubject = new BehaviorSubject([]);
+  listUser = new BehaviorSubject([]);
 
   constructor(private sqlite: SQLite, private toastController: ToastController, private platform: Platform,private alertController: AlertController) {
 this.createDB();
@@ -32,7 +33,19 @@ this.createDB();
   dbState() {
     return this.isDBReady.asObservable();
   }
+  async insertApi(a,b,c,d){
+    try{
+     await this.database.executeSql("INSERT or IGNORE INTO usuario (id_usuario,nombre,clave,rol_id) VALUES (?,?,?,?);",[a,b,c,d]);
+    
+    
+    }catch(e){
+    
+      this.presentToast("Error sql API query" + e);
 
+    }
+    
+    
+    }
 
   async presentToast(msj: string) {
     const toast = await this.toastController.create({
@@ -75,8 +88,8 @@ async presentAlert(msj:string) {
       await this.database.executeSql("INSERT or IGNORE INTO rol(nombre_rol,id_rol) VALUES (?,?);",['alumno',2] );
       // users
 
-      await this.database.executeSql("INSERT or IGNORE INTO usuario (nombre,rut,clave,rol_id,correo) VALUES (?,?,?,?,?);",['f.bar','77.777.777-7','1234',1,'foo.bar@example.com'] );
-      await this.database.executeSql("INSERT or IGNORE INTO usuario (nombre,rut,clave,rol_id,correo) VALUES (?,?,?,?,?);",['j.doe','99.999.999-0','4321',2,"j.doe@example.com"] );
+      //await this.database.executeSql("INSERT or IGNORE INTO usuario (nombre,rut,clave,rol_id,correo) VALUES (?,?,?,?,?);",['f.bar','77.777.777-7','1234',1,'foo.bar@example.com'] );
+      //await this.database.executeSql("INSERT or IGNORE INTO usuario (nombre,rut,clave,rol_id,correo) VALUES (?,?,?,?,?);",['j.doe','99.999.999-0','4321',2,"j.doe@example.com"] );
 
       this.searchSubjects();
 
@@ -108,11 +121,11 @@ async presentAlert(msj:string) {
     })
   }
 fetchSubjects(): Observable<Asignaturas[]> {
-    return this.list.asObservable();
+    return this.listSubject.asObservable();
   }
 fetchUsers(): Observable<Usuario[]> {
 
-    return this.list.asObservable();
+    return this.listUser.asObservable();
   }
 
 
@@ -133,7 +146,7 @@ async searchSubjects() {
 
       }
       //actualizamos el observable de las noticias
-      this.list.next(items);
+      this.listSubject.next(items);
     })
   }
 async searchUsers() {
@@ -151,7 +164,8 @@ async searchUsers() {
           })
         }
       }
-      this.list.next(items);
+      this.listUser.next(items);
     })
   }
+
 }
