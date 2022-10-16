@@ -20,7 +20,6 @@ export class SectionsTeacherComponent implements OnInit {
   ];
   constructor(private router: Router, public nativeStorage: NativeStorage, private dbService: DataBaseService) { }
   ngOnInit() {
-
     this.nativeStorage.getItem('id').then((data) => {
       this.id = data;
     })
@@ -30,7 +29,6 @@ export class SectionsTeacherComponent implements OnInit {
           this.subSect = item;
         }
         )
-
       }
     })
 

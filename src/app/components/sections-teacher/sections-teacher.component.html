@@ -10,7 +10,7 @@
       </ion-list-header>
   
       <ion-item *ngFor="let s of subSect">
-        <ion-label color="primary">{{ s.asignatura_id  }} <br>
+        <ion-label *ngIf="s.id == id" color="primary">{{ s.asignatura_id  }} <br>
 
         <p>{{ s.seccion_id }}</p> </ion-label>
 

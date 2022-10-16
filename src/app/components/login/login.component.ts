@@ -61,7 +61,8 @@ export class LoginComponent implements OnInit {
 
   }
   ngOnInit() {
-    this.apirest.getUsers().subscribe((res) => {
+
+     this.apirest.getUsers().subscribe((res) => {
       if (res) {
         this.usersApi = res;
         for (let i = 0; i < this.usersApi.length; i++) {
@@ -101,14 +102,46 @@ export class LoginComponent implements OnInit {
     }, (error) => {
       console.log(error);
     });
-    this.dbService.dbState().subscribe(res => {
+      this.dbService.dbState().subscribe(res => {
       if (res) {
         this.dbService.fetchUsers().subscribe(item => {
           this.users = item;
         }
         )
+
       }
     })
+   //     this.dbService.dbState().subscribe(res => {
+ //      if (res) {
+ //        this.dbService.fetchSubjects().subscribe(item => {
+ //          this.presentToast('buscardos subjects');
+ //        }
+ //        )
+
+ //      }
+ //    })
+ //    this.dbService.dbState().subscribe(res => {
+ //      if (res) {
+ //        this.dbService.fecthSect().subscribe(item => {
+ //          this.presentToast('buscardos sect');
+ //        }
+ //        )
+
+ //      }
+ //    })
+
+
+ // this.dbService.dbState().subscribe(res => {
+ //      if (res) {
+ //        this.dbService.fetchSubSect().subscribe(item => {
+ //          this.presentToast('buscardos subsect');
+ //        }
+ //        )
+
+ //      }
+ //    })
+
+
 
 
 

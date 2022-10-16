@@ -7,7 +7,7 @@ import { Usuario } from './usuario';
 import { AlertController, Platform, ToastController } from '@ionic/angular';
 import { AsigSecc } from './asig-secc';
 
-import { Section} from './section';
+import { Section } from './section';
 @Injectable({
   providedIn: 'root'
 })
@@ -38,23 +38,23 @@ export class DataBaseService {
   }
 
 
- insertApi(t, a, b, c, d) {
-        try {
-          if (t == 1)
-            this.database.executeSql("INSERT or IGNORE INTO usuario (id_usuario,nombre,clave,rol_id) VALUES (?,?,?,?);", [a, b, c, d]);
-          else if (t == 2) {
-           this.database.executeSql("INSERT or IGNORE INTO asignatura (id_asignatura ,sigla,nombre) VALUES (?,?,?);", [a, b, c]);
-          }
-          else if (t == 3) {
-            this.database.executeSql("INSERT or IGNORE INTO seccion (id_seccion,sigla) VALUES (?,?);", [a, b]);
-          }
-        else if (t == 4) {
-            this.database.executeSql("INSERT or IGNORE INTO asig_secc (id_asig_secc,asignatura_id,seccion_id,profesor_id) VALUES (?,?,?,?);", [a, b,c,d]);
-          }
+  insertApi(t, a, b, c, d) {
+    try {
+      if (t == 1)
+        this.database.executeSql("INSERT or IGNORE INTO usuario (id_usuario,nombre,clave,rol_id) VALUES (?,?,?,?);", [a, b, c, d]);
+      else if (t == 2) {
+        this.database.executeSql("INSERT or IGNORE INTO asignatura (id_asignatura ,sigla,nombre) VALUES (?,?,?);", [a, b, c]);
+      }
+      else if (t == 3) {
+        this.database.executeSql("INSERT or IGNORE INTO seccion (id_seccion,sigla) VALUES (?,?);", [a, b]);
+      }
+      else if (t == 4) {
+        this.database.executeSql("INSERT or IGNORE INTO asig_secc (id_asig_secc,asignatura_id,seccion_id,profesor_id) VALUES (?,?,?,?);", [a, b, c, d]);
+      }
 
-        } catch (e) {
-          this.presentToast("Error sql API query" + e);
-        }
+    } catch (e) {
+      this.presentToast("Error sql API query" + e);
+    }
   }
 
   async presentToast(msj: string) {
@@ -88,12 +88,11 @@ export class DataBaseService {
       await this.database.executeSql(this.detailAssistTable, []);
       await this.database.executeSql("INSERT or IGNORE INTO rol(nombre_rol,id_rol) VALUES (?,?);", ['profesor', 1]);
       await this.database.executeSql("INSERT or IGNORE INTO rol(nombre_rol,id_rol) VALUES (?,?);", ['alumno', 2]);
-
       this.searchUsers();
-     this.searchSubjects();
-      this.searchSections();
-      this.searchSubSect();
-       this.isDBReady.next(true);
+       this.searchSubjects();
+       this.searchSections();
+       this.searchSubSect();
+      this.isDBReady.next(true);
     } catch (e) {
       this.presentToast("Error sql query" + e);
     }
@@ -128,9 +127,8 @@ export class DataBaseService {
     return this.listSubSect.asObservable();
   }
 
-  fecthSect(): Observable<Section[]>{
-
-return this.listSect.asObservable();
+  fecthSect(): Observable<Section[]> {
+    return this.listSect.asObservable();
   }
   searchSubjects() {
     //retorno la ejecución del select
@@ -152,7 +150,7 @@ return this.listSect.asObservable();
       this.listSubSect.next(items);
     })
   }
- searchSections() {
+  searchSections() {
     return this.database.executeSql('SELECT * FROM seccion', []).then(res => {
       let items: Section[] = [];
       if (res.rows.length > 0) {
@@ -164,7 +162,6 @@ return this.listSect.asObservable();
         }
 
       }
-      //actualizamos el observable de las noticias
       this.listSect.next(items);
     })
   }
@@ -188,12 +185,11 @@ return this.listSect.asObservable();
         }
 
       }
-      //actualizamos el observable de las noticias
       this.listSubSect.next(items);
     })
   }
 
-   searchUsers() {
+  searchUsers() {
     return this.database.executeSql('SELECT * FROM usuario', []).then(res => {
       let items: Usuario[] = [];
       if (res.rows.length > 0) {
