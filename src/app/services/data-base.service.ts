@@ -23,28 +23,25 @@ export class DataBaseService {
   listUser = new BehaviorSubject([]);
   constructor(private sqlite: SQLite, private toastController: ToastController, private platform: Platform, private alertController: AlertController) {
     this.createDB();
-
   }
 
   dbState() {
     return this.isDBReady.asObservable();
   }
-  async insertApi(t, a, b, c, d) {
 
-    this.dbState().subscribe(res => {
-      if (res) {
+
+ insertApi(t, a, b, c, d) {
         try {
           if (t == 1)
             this.database.executeSql("INSERT or IGNORE INTO usuario (id_usuario,nombre,clave,rol_id) VALUES (?,?,?,?);", [a, b, c, d]);
           else if (t == 2) {
-            this.database.executeSql("INSERT or IGNORE INTO asignatura (id_asignatura ,sigla,nombre) VALUES (?,?,?);", [a, b, c]);
+           this.database.executeSql("INSERT or IGNORE INTO asignatura (id_asignatura ,sigla,nombre) VALUES (?,?,?);", [a, b, c]);
           }
         } catch (e) {
           this.presentToast("Error sql API query" + e);
+
         }
-      }
-    }
-    )
+
   }
 
   async presentToast(msj: string) {
@@ -81,13 +78,13 @@ export class DataBaseService {
       await this.database.executeSql(this.detailAssistTable, []);
       await this.database.executeSql("INSERT or IGNORE INTO rol(nombre_rol,id_rol) VALUES (?,?);", ['profesor', 1]);
       await this.database.executeSql("INSERT or IGNORE INTO rol(nombre_rol,id_rol) VALUES (?,?);", ['alumno', 2]);
-      this.searchSubjects();
+
+     this.searchSubjects();
       this.searchUsers();
-      this.isDBReady.next(true);
+       this.isDBReady.next(true);
     } catch (e) {
       this.presentToast("Error sql query" + e);
     }
-
   }
 
   createDB() {
@@ -112,12 +109,11 @@ export class DataBaseService {
     return this.listSubject.asObservable();
   }
   fetchUsers(): Observable<Usuario[]> {
-
     return this.listUser.asObservable();
   }
 
 
-  async searchSubjects() {
+  searchSubjects() {
     //retorno la ejecución del select
     return this.database.executeSql('SELECT * FROM asignatura', []).then(res => {
       //creo mi lista de objetos de noticias vacio
@@ -137,7 +133,7 @@ export class DataBaseService {
       this.listSubject.next(items);
     })
   }
-  async searchUsers() {
+   searchUsers() {
     return this.database.executeSql('SELECT * FROM usuario', []).then(res => {
       let items: Usuario[] = [];
       if (res.rows.length > 0) {

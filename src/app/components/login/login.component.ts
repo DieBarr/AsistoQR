@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataBaseService } from '../../services/data-base.service';
+
+import { ApiRestService } from '../../services/api-rest.service';
 import { ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 @Component({
@@ -8,7 +10,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  constructor(public toastController: ToastController, private router: Router, private dbService: DataBaseService) { }
+  constructor(public toastController: ToastController, private router: Router, private apirest: ApiRestService, private dbService: DataBaseService) { }
+  usersApi: any;
+
+  subjectsApi: any;
   email: string = '';
   password: string = '';
   users: any = [
@@ -56,6 +61,30 @@ export class LoginComponent implements OnInit {
 
       }
     })
+
+
+
+this.apirest.getUsers().subscribe((res) => {
+   if(res){
+      this.usersApi = res;
+      for(let i=0; i<this.usersApi.length; i++ ){
+        this.dbService.insertApi(1,res[i].id, res[i].nombre, res[i].clave, res[i].id_rol);
+      }
+   }
+    }, (error) => {
+      console.log(error);
+    });
+
+ this.apirest.getSubjects().subscribe((res) => {
+   if(res){
+      this.subjectsApi = res;
+      for(let i=0; i<this.subjectsApi.length; i++ ){
+        this.dbService.insertApi(2, res[i].id,res[i].sigla,res[i].nombre,null);
+      }
+   }
+    }, (error) => {
+      console.log(error);
+    });
 
   }
 

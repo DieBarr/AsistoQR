@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataBaseService} from '../../services/data-base.service';
+
+import { ApiRestService} from '../../services/api-rest.service';
 @Component({
   selector: 'app-courses',
   templateUrl: './courses.component.html',
@@ -9,6 +11,8 @@ export class CoursesComponent implements OnInit {
   names:string;
   email:string;
   name:string;
+
+  subjectsApi: any;
   subjects:any = [
 
    {
@@ -17,7 +21,7 @@ export class CoursesComponent implements OnInit {
       sigla: ''
     }
 ]
-  constructor( private dbService:  DataBaseService) {
+  constructor( private dbService:  DataBaseService, private apirest: ApiRestService) {
 
 
   }
