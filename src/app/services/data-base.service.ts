@@ -5,6 +5,9 @@ import { Asignaturas } from './asignaturas';
 
 import { Usuario } from './usuario';
 import { AlertController, Platform, ToastController } from '@ionic/angular';
+import { AsigSecc } from './asig-secc';
+
+import { Section} from './section';
 @Injectable({
   providedIn: 'root'
 })
@@ -15,12 +18,17 @@ export class DataBaseService {
   userTable: string = "CREATE TABLE IF NOT EXISTS usuario(id_usuario INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(32) NOT NULL, correo VARCHAR(32), clave VARCHAR(32) NOT NULL,rol_id INTEGER,  rut VARCHAR(10) , FOREIGN KEY(rol_id)  REFERENCES rol(id_rol));";
   subjectTable: string = "CREATE TABLE IF NOT EXISTS asignatura(id_asignatura INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(128), sigla VARCHAR(10) NOT NULL);";
   sectionTable: string = "CREATE TABLE IF NOT EXISTS seccion(id_seccion INTEGER PRIMARY KEY autoincrement, sigla VARCHAR(10) NOT NULL);";
-  subjSectTable: string = "CREATE TABLE IF NOT EXISTS asig_secc(id_asig_secc INTEGER PRIMARY KEY autoincrement, asignatura_id INTEGER NOT NULL,  seccion_id INTEGER NOT NULL,  usuario_id INTEGER NOT NULL, FOREIGN KEY(seccion_id) REFERENCES seccion(id_seccion), FOREIGN KEY(asignatura_id) REFERENCES asignatura(id_asignatura), FOREIGN KEY(usuario_id) REFERENCES usuario(id_usuario));";
+  subjSectTable: string = "CREATE TABLE IF NOT EXISTS asig_secc(id_asig_secc INTEGER PRIMARY KEY autoincrement, asignatura_id INTEGER NOT NULL,  seccion_id INTEGER NOT NULL,  profesor_id INTEGER NOT NULL, FOREIGN KEY(seccion_id) REFERENCES seccion(id_seccion), FOREIGN KEY(asignatura_id) REFERENCES asignatura(id_asignatura), FOREIGN KEY(profesor_id) REFERENCES usuario(id_usuario));";
   listTable: string = "CREATE TABLE IF NOT EXISTS listado(id_listado INTEGER PRIMARY KEY autoincrement, estado VARCHAR(15), asig_secc_id INTEGER NOT NULL, usuario_id INTEGER NOT NULL, FOREIGN KEY(asig_secc_id) REFERENCES asig_secc(id_asig_secc) , FOREIGN KEY(usuario_id) REFERENCES usuario(id_usuario));";
   assistenceTable: string = "CREATE TABLE IF NOT EXISTS asistencia(id_asistencia INTEGER PRIMARY KEY autoincrement, fecha DATE, qr BLOB, hora_inicio DATETIME, hora_fin DATETIME, asig_secc_id INTEGER NOT NULL, FOREIGN KEY(asig_secc_id) REFERENCES asig_secc(id_asig_secc));";
   detailAssistTable: string = "CREATE TABLE IF NOT EXISTS detalle_asist(id_detalle INTEGER PRIMARY KEY autoincrement,estado VARCHAR(15), asistencia_id INTEGER NOT NULL,usuario_id INTEGER NOT NULL,  FOREIGN KEY(asistencia_id) REFERENCES asistencia(id_asistencia), FOREIGN KEY(usuario_id) REFERENCES usuario(id_usuario));";
   listSubject = new BehaviorSubject([]);
   listUser = new BehaviorSubject([]);
+
+  listSect = new BehaviorSubject([]);
+
+  listSubSect = new BehaviorSubject([]);
+
   constructor(private sqlite: SQLite, private toastController: ToastController, private platform: Platform, private alertController: AlertController) {
     this.createDB();
   }
@@ -37,11 +45,16 @@ export class DataBaseService {
           else if (t == 2) {
            this.database.executeSql("INSERT or IGNORE INTO asignatura (id_asignatura ,sigla,nombre) VALUES (?,?,?);", [a, b, c]);
           }
+          else if (t == 3) {
+            this.database.executeSql("INSERT or IGNORE INTO seccion (id_seccion,sigla) VALUES (?,?);", [a, b]);
+          }
+        else if (t == 4) {
+            this.database.executeSql("INSERT or IGNORE INTO asig_secc (id_asig_secc,asignatura_id,seccion_id,profesor_id) VALUES (?,?,?,?);", [a, b,c,d]);
+          }
+
         } catch (e) {
           this.presentToast("Error sql API query" + e);
-
         }
-
   }
 
   async presentToast(msj: string) {
@@ -61,10 +74,7 @@ export class DataBaseService {
     });
 
     await alert.present();
-
   }
-
-
   async createTables() {
     try {
       //executing sql querys
@@ -79,8 +89,10 @@ export class DataBaseService {
       await this.database.executeSql("INSERT or IGNORE INTO rol(nombre_rol,id_rol) VALUES (?,?);", ['profesor', 1]);
       await this.database.executeSql("INSERT or IGNORE INTO rol(nombre_rol,id_rol) VALUES (?,?);", ['alumno', 2]);
 
-     this.searchSubjects();
       this.searchUsers();
+     this.searchSubjects();
+      this.searchSections();
+      this.searchSubSect();
        this.isDBReady.next(true);
     } catch (e) {
       this.presentToast("Error sql query" + e);
@@ -112,7 +124,14 @@ export class DataBaseService {
     return this.listUser.asObservable();
   }
 
+  fetchSubSect(): Observable<AsigSecc[]> {
+    return this.listSubSect.asObservable();
+  }
 
+  fecthSect(): Observable<Section[]>{
+
+return this.listSect.asObservable();
+  }
   searchSubjects() {
     //retorno la ejecución del select
     return this.database.executeSql('SELECT * FROM asignatura', []).then(res => {
@@ -130,9 +149,50 @@ export class DataBaseService {
 
       }
       //actualizamos el observable de las noticias
-      this.listSubject.next(items);
+      this.listSubSect.next(items);
     })
   }
+ searchSections() {
+    return this.database.executeSql('SELECT * FROM seccion', []).then(res => {
+      let items: Section[] = [];
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          items.push({
+            id: res.rows.item(i).id_asignatura,
+            sigla: res.rows.item(i).sigla
+          })
+        }
+
+      }
+      //actualizamos el observable de las noticias
+      this.listSect.next(items);
+    })
+  }
+
+
+  searchSubSect() {
+    //retorno la ejecución del select
+    return this.database.executeSql('SELECT * FROM asig_secc', []).then(res => {
+      //creo mi lista de objetos de noticias vacio
+      let items: AsigSecc[] = [];
+      //si cuento mas de 0 filas en el resultSet entonces agrego los registros al items
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          items.push({
+            id: res.rows.item(i).id_asig_secc,
+            asignatura_id: res.rows.item(i).asignatura_id,
+            seccion_id: res.rows.item(i).seccion_id,
+            profesor_id: res.rows.item(i).profesor_id
+
+          })
+        }
+
+      }
+      //actualizamos el observable de las noticias
+      this.listSubSect.next(items);
+    })
+  }
+
    searchUsers() {
     return this.database.executeSql('SELECT * FROM usuario', []).then(res => {
       let items: Usuario[] = [];

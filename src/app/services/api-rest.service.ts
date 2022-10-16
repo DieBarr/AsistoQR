@@ -13,16 +13,28 @@ export class ApiRestService {
     'Access-Control-Allow-Origin' :'*'
     })
     }
-    apiURL = 'https://my-json-server.typicode.com/victorrosendo/repoUsuariosRamos';
+    apiURURL = 'https://my-json-server.typicode.com/victorrosendo/repoUsuariosRamos';
+
+    apiASURL = 'https://my-json-server.typicode.com/victorrosendo/repoSeccionAsigSeccion';
   constructor(private http:HttpClient) { }
 
   getUsers():Observable<any>{
-    return this.http.get(this.apiURL+'/users/').pipe(
+    return this.http.get(this.apiURURL+'/users/').pipe(
     retry(3)
     );
   }
  getSubjects():Observable<any>{
-    return this.http.get(this.apiURL+'/ramos/').pipe(
+    return this.http.get(this.apiURURL+'/ramos/').pipe(
+    retry(3)
+    );
+    }
+ getSections():Observable<any>{
+    return this.http.get(this.apiASURL+'/seccion/').pipe(
+    retry(3)
+    );
+    }
+ getSubSect():Observable<any>{
+    return this.http.get(this.apiASURL+'/asigsecci/').pipe(
     retry(3)
     );
     }

@@ -12,7 +12,6 @@ export class CoursesComponent implements OnInit {
   email:string;
   name:string;
 
-  subjectsApi: any;
   subjects:any = [
 
    {
@@ -21,7 +20,7 @@ export class CoursesComponent implements OnInit {
       sigla: ''
     }
 ]
-  constructor( private dbService:  DataBaseService, private apirest: ApiRestService) {
+  constructor( private dbService:  DataBaseService) {
 
 
   }

@@ -9,20 +9,15 @@
         </ion-label>
       </ion-list-header>
   
-      <ion-item>
-        <ion-label (click)="goToSection()"  [routerLink]="['/Section']" color="primary"> 2022_2_PN_PGY4121_23788397_PCT<br>
-        <p>Programación de aplicaciones móbiles</p> </ion-label>
+      <ion-item *ngFor="let s of subSect">
+        <ion-label color="primary">{{ s.asignatura_id  }} <br>
+
+        <p>{{ s.seccion_id }}</p> </ion-label>
 
       </ion-item>
-      <ion-item>
-        <ion-label color="primary">2022_2_PN_PGY4121_23788397_PCT<br>
-        <p>Programación de aplicaciones móbiles</p> </ion-label>
- 
-      </ion-item>
-  
+
  
  
   </ion-list>
 
   </ion-content>
-  
