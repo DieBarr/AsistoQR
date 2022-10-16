@@ -12,12 +12,14 @@ export class SectionsTeacherComponent implements OnInit {
   id: any;
   subSect: any = [
     {
-      id: '',
-      asignatura_id: '',
-      seccion_id: '',
-      profesor_id: '',
-      nombre_asignatura: '',
-      sigla: ''
+    id: '',
+    asignatura_id: '',
+    seccion_id: '',
+    profesor_id:'',
+    nombre_asignatura: '',
+    sigla_asig:'',
+    sigla_secc:''
+
     }
   ];
 

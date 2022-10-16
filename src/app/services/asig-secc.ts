@@ -4,5 +4,7 @@ export class AsigSecc {
     seccion_id: number;
     profesor_id:number;
     nombre_asignatura: string;
-    sigla:string;
+    sigla_asig:string;
+    sigla_secc:string;
+
 }
