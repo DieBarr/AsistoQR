@@ -111,38 +111,6 @@ export class LoginComponent implements OnInit {
 
       }
     })
-   //     this.dbService.dbState().subscribe(res => {
- //      if (res) {
- //        this.dbService.fetchSubjects().subscribe(item => {
- //          this.presentToast('buscardos subjects');
- //        }
- //        )
-
- //      }
- //    })
- //    this.dbService.dbState().subscribe(res => {
- //      if (res) {
- //        this.dbService.fecthSect().subscribe(item => {
- //          this.presentToast('buscardos sect');
- //        }
- //        )
-
- //      }
- //    })
-
-
- // this.dbService.dbState().subscribe(res => {
- //      if (res) {
- //        this.dbService.fetchSubSect().subscribe(item => {
- //          this.presentToast('buscardos subsect');
- //        }
- //        )
-
- //      }
- //    })
-
-
-
 
 
   }

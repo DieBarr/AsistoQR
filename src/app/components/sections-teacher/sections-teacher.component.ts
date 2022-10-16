@@ -18,19 +18,40 @@ export class SectionsTeacherComponent implements OnInit {
       profesor_id: ''
     }
   ];
+subject: any = [
+    {
+      id: '',
+      sigla: '',
+      nombre: ''
+    }
+  ];
+
+
+
+
   constructor(private router: Router, public nativeStorage: NativeStorage, private dbService: DataBaseService) { }
   ngOnInit() {
     this.nativeStorage.getItem('id').then((data) => {
       this.id = data;
     })
+
     this.dbService.dbState().subscribe(res => {
       if (res) {
         this.dbService.fetchSubSect().subscribe(item => {
           this.subSect = item;
-        }
+         }
         )
       }
     })
+    this.dbService.dbState().subscribe(res => {
+      if (res) {
+        this.dbService.fetchSubjects().subscribe(item => {
+          this.subject = item;
+                   }
+        )
+      }
+    })
+
 
   }
 

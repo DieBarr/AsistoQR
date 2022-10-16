@@ -8,14 +8,23 @@
           Secciones
         </ion-label>
       </ion-list-header>
-  
-      <ion-item *ngFor="let s of subSect">
-        <ion-label *ngIf="s.id == id" color="primary">{{ s.asignatura_id  }} <br>
+ <div *ngFor="let ss of subSect">
+<div *ngFor="let su of subject">
+   <ion-item *ngIf="ss.profesor_id == id">
 
-        <p>{{ s.seccion_id }}</p> </ion-label>
 
+  <div *ngIf="su.id == ss.asignatura_id">
+        <ion-label color="primary">{{ su.nombre  }} {{su.sigla}} <br>
+
+        </ion-label>
+
+
+</div>
       </ion-item>
 
+</div>
+
+ </div>
  
  
   </ion-list>
