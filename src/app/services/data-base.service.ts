@@ -16,9 +16,9 @@ export class DataBaseService {
   private isDBReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
   roleTable: string = "CREATE TABLE IF NOT EXISTS rol(id_rol INTEGER PRIMARY KEY AUTOINCREMENT, nombre_rol VARCHAR(32) NOT NULL);";
   userTable: string = "CREATE TABLE IF NOT EXISTS usuario(id_usuario INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(32) NOT NULL, correo VARCHAR(32), clave VARCHAR(32) NOT NULL,rol_id INTEGER,  rut VARCHAR(10) , FOREIGN KEY(rol_id)  REFERENCES rol(id_rol));";
-  subjectTable: string = "CREATE TABLE IF NOT EXISTS asignatura(id_asignatura INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(128), sigla VARCHAR(10) NOT NULL);";
+  subjectTable: string = "CREATE TABLE IF NOT EXISTS asignatura(id_asignatura INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(128) NOT NULL, sigla VARCHAR(10) NOT NULL);";
   sectionTable: string = "CREATE TABLE IF NOT EXISTS seccion(id_seccion INTEGER PRIMARY KEY autoincrement, sigla VARCHAR(10) NOT NULL);";
-  subjSectTable: string = "CREATE TABLE IF NOT EXISTS asig_secc(id_asig_secc INTEGER PRIMARY KEY autoincrement, asignatura_id INTEGER NOT NULL,  seccion_id INTEGER NOT NULL,  profesor_id INTEGER NOT NULL, FOREIGN KEY(seccion_id) REFERENCES seccion(id_seccion), FOREIGN KEY(asignatura_id) REFERENCES asignatura(id_asignatura), FOREIGN KEY(profesor_id) REFERENCES usuario(id_usuario));";
+  subjSectTable: string = "CREATE TABLE IF NOT EXISTS asig_secc(id_asig_secc INTEGER PRIMARY KEY autoincrement, id_asignatura INTEGER NOT NULL,  seccion_id INTEGER NOT NULL,  profesor_id INTEGER NOT NULL, FOREIGN KEY(seccion_id) REFERENCES seccion(id_seccion), FOREIGN KEY(id_asignatura) REFERENCES asignatura(id_asignatura), FOREIGN KEY(profesor_id) REFERENCES usuario(id_usuario));";
   listTable: string = "CREATE TABLE IF NOT EXISTS listado(id_listado INTEGER PRIMARY KEY autoincrement, estado VARCHAR(15), asig_secc_id INTEGER NOT NULL, usuario_id INTEGER NOT NULL, FOREIGN KEY(asig_secc_id) REFERENCES asig_secc(id_asig_secc) , FOREIGN KEY(usuario_id) REFERENCES usuario(id_usuario));";
   assistenceTable: string = "CREATE TABLE IF NOT EXISTS asistencia(id_asistencia INTEGER PRIMARY KEY autoincrement, fecha DATE, qr BLOB, hora_inicio DATETIME, hora_fin DATETIME, asig_secc_id INTEGER NOT NULL, FOREIGN KEY(asig_secc_id) REFERENCES asig_secc(id_asig_secc));";
   detailAssistTable: string = "CREATE TABLE IF NOT EXISTS detalle_asist(id_detalle INTEGER PRIMARY KEY autoincrement,estado VARCHAR(15), asistencia_id INTEGER NOT NULL,usuario_id INTEGER NOT NULL,  FOREIGN KEY(asistencia_id) REFERENCES asistencia(id_asistencia), FOREIGN KEY(usuario_id) REFERENCES usuario(id_usuario));";
@@ -49,7 +49,7 @@ export class DataBaseService {
         this.database.executeSql("INSERT or IGNORE INTO seccion (id_seccion,sigla) VALUES (?,?);", [a, b]);
       }
       else if (t == 4) {
-        this.database.executeSql("INSERT or IGNORE INTO asig_secc (id_asig_secc,asignatura_id,seccion_id,profesor_id) VALUES (?,?,?,?);", [a, b, c, d]);
+        this.database.executeSql("INSERT or IGNORE INTO asig_secc (id_asig_secc,id_asignatura,seccion_id,profesor_id) VALUES (?,?,?,?);", [a, b, c, d]);
       }
 
     } catch (e) {
@@ -169,7 +169,7 @@ export class DataBaseService {
 
   searchSubSect() {
     //retorno la ejecución del select
-    return this.database.executeSql('SELECT * FROM asig_secc', []).then(res => {
+    return this.database.executeSql('SELECT * FROM asig_secc JOIN asignatura  USING(id_asignatura)', []).then(res => {
       //creo mi lista de objetos de noticias vacio
       let items: AsigSecc[] = [];
       //si cuento mas de 0 filas en el resultSet entonces agrego los registros al items
@@ -179,8 +179,9 @@ export class DataBaseService {
             id: res.rows.item(i).id_asig_secc,
             asignatura_id: res.rows.item(i).asignatura_id,
             seccion_id: res.rows.item(i).seccion_id,
-            profesor_id: res.rows.item(i).profesor_id
-
+            profesor_id: res.rows.item(i).profesor_id,
+            nombre_asignatura: res.rows.item(i).nombre,
+            sigla: res.rows.item(i).sigla
           })
         }
 

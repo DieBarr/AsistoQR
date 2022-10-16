@@ -15,18 +15,11 @@ export class SectionsTeacherComponent implements OnInit {
       id: '',
       asignatura_id: '',
       seccion_id: '',
-      profesor_id: ''
+      profesor_id: '',
+      nombre_asignatura: '',
+      sigla: ''
     }
   ];
-subject: any = [
-    {
-      id: '',
-      sigla: '',
-      nombre: ''
-    }
-  ];
-
-
 
 
   constructor(private router: Router, public nativeStorage: NativeStorage, private dbService: DataBaseService) { }
@@ -43,20 +36,7 @@ subject: any = [
         )
       }
     })
-    this.dbService.dbState().subscribe(res => {
-      if (res) {
-        this.dbService.fetchSubjects().subscribe(item => {
-          this.subject = item;
-                   }
-        )
-      }
-    })
 
-
-  }
-
-  goToSection() {
-    this.router.navigate(['section'])
   }
 
 }
