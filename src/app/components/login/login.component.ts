@@ -43,12 +43,16 @@ export class LoginComponent implements OnInit {
         if (this.users[u].rol == 1) {
 
           this.nativeStorage.setItem('id', this.users[u].id);
+
           this.router.navigate(['home-teacher/sections']);
+
+
 
         }
         else if (this.users[u].rol == 2) {
 
           this.nativeStorage.setItem('id', this.users[u].id);
+
           this.router.navigate(['home-student/courses']);
         }
       } else {
