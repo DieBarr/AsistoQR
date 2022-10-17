@@ -6,5 +6,4 @@ export class AsigSecc {
     nombre_asignatura: string;
     sigla_asig:string;
     sigla_secc:string;
-
 }

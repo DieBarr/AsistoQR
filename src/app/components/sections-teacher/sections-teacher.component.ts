@@ -10,30 +10,26 @@ import { DataBaseService } from '../../services/data-base.service';
 })
 export class SectionsTeacherComponent implements OnInit {
   id: any;
-  subSect: any = [
+   subjects: any = [
     {
-    id: '',
-    asignatura_id: '',
-    seccion_id: '',
-    profesor_id:'',
-    nombre_asignatura: '',
-    sigla_asig:'',
-    sigla_secc:''
-
+      profesor_id: '',
+      nombre_asig: '',
+      sigla_asig: '',
+      sigla_secc: ''
     }
-  ];
-
-
+  ]
   constructor(private router: Router, public nativeStorage: NativeStorage, private dbService: DataBaseService) { }
+  toSection(a){
+    this.nativeStorage.setItem('subject',a);
+  }
   ngOnInit() {
     this.nativeStorage.getItem('id').then((data) => {
-      this.id = data;
+   this.dbService.onLoginTeacher(data);
     })
-
     this.dbService.dbState().subscribe(res => {
       if (res) {
-        this.dbService.fetchSubSect().subscribe(item => {
-          this.subSect = item;
+        this.dbService.fetchSubSectUT().subscribe(item => {
+          this.subjects = item;
          }
         )
       }

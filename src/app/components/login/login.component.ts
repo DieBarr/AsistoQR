@@ -16,19 +16,19 @@ export class LoginComponent implements OnInit {
   subjectsApi: any;
   sectApi: any;
 
-
   subSectApi: any;
-  email: string = '';
+  user: string = '';
   password: string = '';
   users: any = [
     {
-      id: '',
+      id_usuario: '',
+      nombre_usuario: '',
       nombre: '',
+      apellido: '',
       clave: '',
       correo: '',
-      rut: '',
-      rol: ''
-
+      rol_id: '',
+      rut: ''
     }
   ]
   sendData() {
@@ -39,20 +39,13 @@ export class LoginComponent implements OnInit {
 
     }
     for (let u in this.users) {
-      if (this.users[u].nombre == this.email && this.users[u].clave == this.password) {
-        if (this.users[u].rol == 1) {
-
-          this.nativeStorage.setItem('id', this.users[u].id);
-
+      if (this.users[u].nombre_usuario == this.user && this.users[u].clave == this.password) {
+        if (this.users[u].rol_id == 1) {
+          this.nativeStorage.setItem('id', this.users[u].id_usuario);
           this.router.navigate(['home-teacher/sections']);
-
-
-
         }
-        else if (this.users[u].rol == 2) {
-
-          this.nativeStorage.setItem('id', this.users[u].id);
-
+        else if (this.users[u].rol_id == 2) {
+          this.nativeStorage.setItem('id', this.users[u].id_usuario);
           this.router.navigate(['home-student/courses']);
         }
       } else {
@@ -66,7 +59,7 @@ export class LoginComponent implements OnInit {
   }
   ngOnInit() {
 
-     this.apirest.getUsers().subscribe((res) => {
+    this.apirest.getUsers().subscribe((res) => {
       if (res) {
         this.usersApi = res;
         for (let i = 0; i < this.usersApi.length; i++) {
@@ -106,7 +99,7 @@ export class LoginComponent implements OnInit {
     }, (error) => {
       console.log(error);
     });
-      this.dbService.dbState().subscribe(res => {
+    this.dbService.dbState().subscribe(res => {
       if (res) {
         this.dbService.fetchUsers().subscribe(item => {
           this.users = item;

@@ -5,12 +5,10 @@
         Secciones
       </ion-label>
     </ion-list-header>
-    <div *ngFor="let s of subSect">
-            <ion-item *ngIf="s.profesor_id == id">
-            <ion-label color="primary" style="word-wrap: break-word;white-space: normal;">{{ s.nombre_asignatura  }} {{  s.sigla_asig }} {{  s.sigla_secc }}<br>
+     <ion-item *ngFor="let s of subjects">
+            <ion-label color="primary" [routerLink]="['/section']" style="word-wrap: break-word;white-space: normal;" (click)="[toSection(s)]">{{ s.nombre_asig }} {{  s.sigla_asig }} {{  s.sigla_secc }}<br>
               <p>  </p>
             </ion-label>
         </ion-item>
-    </div>
   </ion-list>
 </ion-content>
