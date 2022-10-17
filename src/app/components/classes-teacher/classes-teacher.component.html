@@ -7,34 +7,16 @@
 <!-- List of Text Items -->
 <ion-list>
   <ion-radio-group value="1">
-<ion-item>
+<ion-item *ngFor="let a of classes">
        <ion-label>
-              <h2 style="font-weight:bolder;" [routerLink]="['/classes']">Clase 19 de agosto 2022</h2>
-              <h3 style="font-weight:bold;" >Estado:<ion-chip color="warning" class="ion-align-items-end">En espera</ion-chip></h3>
+              <h2 style="font-weight:bolder;" [routerLink]="['/classes']">{{ a.fecha }}</h2>
+              <h3 style="font-weight:bold;" >Estado:<ion-chip color="warning" class="ion-align-items-end">{{ a.estado_clase  }}</ion-chip></h3>
               <p>I've got enough on my plate as it is, and I...</p>
             </ion-label>
 
-      <ion-radio value="1"></ion-radio>
+      <ion-radio value="a."></ion-radio>
   </ion-item>
 
-  <ion-item>
-       <ion-label>
-              <h2 style="font-weight:bolder;">Clase 12 de agosto 2022</h2>
-              <h3 style="font-weight:bold;" >Estado:<ion-chip color="success" class="ion-align-items-end">Completada</ion-chip></h3>
-              <p>I've got enough on my plate as it is, and I...</p>
-            </ion-label>
-
-      <ion-radio value="2"></ion-radio>
-  </ion-item>
-    <ion-item>
-       <ion-label>
-              <h2 style="font-weight:bolder;">Clase 8 de agosto 2022</h2>
-              <h3 style="font-weight:bold;" >Estado:<ion-chip color="success" class="ion-align-items-end">Completada</ion-chip></h3>
-              <p>I've got enough on my plate as it is, and I...</p>
-            </ion-label>
-
-      <ion-radio value="3"></ion-radio>
-  </ion-item>
-  </ion-radio-group>
+    </ion-radio-group>
   </ion-list>
 </ion-content>

@@ -15,12 +15,14 @@ export class SectionsTeacherComponent implements OnInit {
       profesor_id: '',
       nombre_asig: '',
       sigla_asig: '',
-      sigla_secc: ''
+      sigla_secc: '',
+      id_asig_secc:''
     }
   ]
   constructor(private router: Router, public nativeStorage: NativeStorage, private dbService: DataBaseService) { }
   toSection(a){
     this.nativeStorage.setItem('subject',a);
+
   }
   ngOnInit() {
     this.nativeStorage.getItem('id').then((data) => {

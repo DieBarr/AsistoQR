@@ -27,7 +27,7 @@ export class DataBaseService {
   sectionTable: string = "CREATE TABLE IF NOT EXISTS seccion(id_seccion INTEGER PRIMARY KEY autoincrement, sigla_secc VARCHAR(10) NOT NULL);";
   subjSectTable: string = "CREATE TABLE IF NOT EXISTS asig_secc(id_asig_secc INTEGER PRIMARY KEY autoincrement, id_asignatura INTEGER NOT NULL, id_seccion INTEGER NOT NULL,  profesor_id INTEGER NOT NULL, FOREIGN KEY(id_seccion) REFERENCES seccion(id_seccion), FOREIGN KEY(id_asignatura) REFERENCES asignatura(id_asignatura), FOREIGN KEY(profesor_id) REFERENCES usuario(id_usuario));";
   listTable: string = "CREATE TABLE IF NOT EXISTS listado(id_listado INTEGER PRIMARY KEY autoincrement, estado VARCHAR(15), id_asig_secc INTEGER NOT NULL, id_usuario INTEGER NOT NULL, FOREIGN KEY(id_asig_secc) REFERENCES asig_secc(id_asig_secc) , FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario));";
-  assistenceTable: string = "CREATE TABLE IF NOT EXISTS asistencia(id_asistencia INTEGER PRIMARY KEY autoincrement,estado_clase VARCHAR(15), fecha DATE, qr BLOB, hora_inicio DATETIME, hora_fin DATETIME, id_asig_secc INTEGER NOT NULL, FOREIGN KEY(id_asig_secc) REFERENCES asig_secc(id_asig_secc));";
+  assistenceTable: string = "CREATE TABLE IF NOT EXISTS asistencia(id_asistencia INTEGER PRIMARY KEY autoincrement,estado_clase VARCHAR(15),estado VARCHAR(15), fecha DATE, qr BLOB, hora_inicio DATETIME, hora_fin DATETIME, id_asig_secc INTEGER NOT NULL, FOREIGN KEY(id_asig_secc) REFERENCES asig_secc(id_asig_secc));";
   detailAssistTable: string = "CREATE TABLE IF NOT EXISTS detalle_asist(id_detalle INTEGER PRIMARY KEY autoincrement,estado_asistencia VARCHAR(15), id_asistencia INTEGER NOT NULL,usuario_id INTEGER NOT NULL,  FOREIGN KEY(id_asistencia) REFERENCES asistencia(id_asistencia), FOREIGN KEY(usuario_id) REFERENCES usuario(id_usuario));";
   listSubject = new BehaviorSubject([]);
   listUser = new BehaviorSubject([]);
@@ -120,6 +120,8 @@ listClassesDates  = new BehaviorSubject([]);
 
   }
   onEnterSection(id){
+
+      this.database.executeSql("INSERT or IGNORE INTO asistencia (fecha,estado,id_asig_secc) VALUES (?,?,?);", ['10/10/2022','en espera',2]);
 this.searchClasses(id);
 
   }
