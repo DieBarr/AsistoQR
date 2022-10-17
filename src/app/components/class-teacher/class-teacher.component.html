@@ -10,23 +10,10 @@
   <ion-col>
 
       <ion-row>
-
-          <ion-list-header style="font-weight:bold;"> Presentes </ion-list-header>
-<ion-list>
+<ion-list-header style="font-weight:bold;"> Presentes </ion-list-header>
+<ion-list  *ngFor="let  a of lista">
   <ion-item>
-    <ion-label>Armando Bronca Segura <ion-chip color="success">14:32</ion-chip>  </ion-label>
-  </ion-item>
-  <ion-item>
-    <ion-label>Domingo Díaz Festivo <ion-chip color="success">14:32</ion-chip> </ion-label>
-  </ion-item>
-  <ion-item>
-    <ion-label>Rosa Cortada del Rosal <ion-chip color="success">14:32</ion-chip> </ion-label>
-  </ion-item>
-  <ion-item>
-    <ion-label>Susana Oria <ion-chip color="success" >14:32</ion-chip> </ion-label>
-  </ion-item>
-  <ion-item>
-    <ion-label>Lola Mento <ion-chip color="success">14:32</ion-chip>   </ion-label>
+    <ion-label>{{ a.nombre_usuario }} <ion-chip color="success">{{a.estado_asistencia}}</ion-chip>   </ion-label>
   </ion-item>
 </ion-list>
       </ion-row>

@@ -27,8 +27,8 @@ export class DataBaseService {
   sectionTable: string = "CREATE TABLE IF NOT EXISTS seccion(id_seccion INTEGER PRIMARY KEY autoincrement, sigla_secc VARCHAR(10) NOT NULL);";
   subjSectTable: string = "CREATE TABLE IF NOT EXISTS asig_secc(id_asig_secc INTEGER PRIMARY KEY autoincrement, id_asignatura INTEGER NOT NULL, id_seccion INTEGER NOT NULL,  profesor_id INTEGER NOT NULL, FOREIGN KEY(id_seccion) REFERENCES seccion(id_seccion), FOREIGN KEY(id_asignatura) REFERENCES asignatura(id_asignatura), FOREIGN KEY(profesor_id) REFERENCES usuario(id_usuario));";
   listTable: string = "CREATE TABLE IF NOT EXISTS listado(id_listado INTEGER PRIMARY KEY autoincrement, estado VARCHAR(15), id_asig_secc INTEGER NOT NULL, id_usuario INTEGER NOT NULL, FOREIGN KEY(id_asig_secc) REFERENCES asig_secc(id_asig_secc) , FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario));";
-  assistenceTable: string = "CREATE TABLE IF NOT EXISTS asistencia(id_asistencia INTEGER PRIMARY KEY autoincrement,estado_clase VARCHAR(15),estado VARCHAR(15), fecha DATE, qr BLOB, hora_inicio DATETIME, hora_fin DATETIME, id_asig_secc INTEGER NOT NULL, FOREIGN KEY(id_asig_secc) REFERENCES asig_secc(id_asig_secc));";
-  detailAssistTable: string = "CREATE TABLE IF NOT EXISTS detalle_asist(id_detalle INTEGER PRIMARY KEY autoincrement,estado_asistencia VARCHAR(15), id_asistencia INTEGER NOT NULL,usuario_id INTEGER NOT NULL,  FOREIGN KEY(id_asistencia) REFERENCES asistencia(id_asistencia), FOREIGN KEY(usuario_id) REFERENCES usuario(id_usuario));";
+  assistenceTable: string = "CREATE TABLE IF NOT EXISTS asistencia(id_asistencia INTEGER PRIMARY KEY autoincrement,estado_clase VARCHAR(15), fecha DATE , qr BLOB, hora_inicio DATETIME, hora_fin DATETIME, id_asig_secc INTEGER NOT NULL, FOREIGN KEY(id_asig_secc) REFERENCES asig_secc(id_asig_secc));";
+  detailAssistTable: string = "CREATE TABLE IF NOT EXISTS detalle_asist(id_detalle INTEGER PRIMARY KEY autoincrement,estado_asistencia VARCHAR(15), id_asistencia INTEGER NOT NULL,id_usuario INTEGER NOT NULL,  FOREIGN KEY(id_asistencia) REFERENCES asistencia(id_asistencia), FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario));";
   listSubject = new BehaviorSubject([]);
   listUser = new BehaviorSubject([]);
 
@@ -39,6 +39,7 @@ export class DataBaseService {
   listSubSectU = new BehaviorSubject([]);
 listSubSectUT  = new BehaviorSubject([]);
 
+  listAtendance = new BehaviorSubject([]);
 listClassesDates  = new BehaviorSubject([]);
   constructor(private sqlite: SQLite, private toastController: ToastController, private platform: Platform, private alertController: AlertController, public nativeStorage: NativeStorage ) {
     this.createDB();
@@ -121,10 +122,15 @@ listClassesDates  = new BehaviorSubject([]);
   }
   onEnterSection(id){
 
-      this.database.executeSql("INSERT or IGNORE INTO asistencia (fecha,estado,id_asig_secc) VALUES (?,?,?);", ['10/10/2022','en espera',2]);
+    this.database.executeSql("INSERT or IGNORE INTO asistencia (id_asistencia,fecha,estado_clase,id_asig_secc) VALUES (?,?,?,?);", [id,1666002241,'en espera',id]);
 this.searchClasses(id);
 
   }
+  onEnterList(id){
+    this.database.executeSql("INSERT or IGNORE INTO detalle_asist (id_usuario,id_asistencia,estado_asistencia) VALUES (?,?,?);", [2,id,'presente']);
+    this.searchAtendance(id);
+  }
+
   createDB() {
     //verificamos que la plataforma este lista
     this.platform.ready().then(() => {
@@ -166,6 +172,10 @@ fetchSubSectUT(): Observable<AsigTeacher[]> {
 fetchClasesDates(): Observable<ClassesDates[]> {
     return this.listClassesDates.asObservable();
   }
+fetchAtendance(): Observable<Atendance[]> {
+    return this.listAtendance.asObservable();
+  }
+
 
   searchSubjects() {
     //retorno la ejecución del select
@@ -211,7 +221,7 @@ fetchClasesDates(): Observable<ClassesDates[]> {
   }
   searchSubjectsUT(idu) {
     //retorno la ejecución del select
-    return this.database.executeSql('SELECT *  FROM asig_secc JOIN asignatura  USING(id_asignatura) JOIN seccion USING(id_seccion) WHERE profesor_id = (?)', [idu]).then(res => {
+    return this.database.executeSql("SELECT *  FROM asig_secc JOIN asignatura  USING(id_asignatura) JOIN seccion USING(id_seccion) WHERE profesor_id = (?)", [idu]).then(res => {
       //creo mi lista de objetos de noticias vacio
       let items: AsigTeacher[] = [];
       //si cuento mas de 0 filas en el resultSet entonces agrego los registros al items
@@ -275,7 +285,7 @@ fetchClasesDates(): Observable<ClassesDates[]> {
     })
   }
   searchClasses(id) {
-  return this.database.executeSql('SELECT * FROM asistencia WHERE id_asig_secc = (?)', [id]).then(res => {
+  return this.database.executeSql("SELECT id_asistencia,  fecha, hora_fin, estado_clase, id_asig_secc FROM asistencia WHERE id_asig_secc = (?)", [id]).then(res => {
       let items: ClassesDates[] = [];
 
       if (res.rows.length > 0) {
@@ -285,14 +295,40 @@ fetchClasesDates(): Observable<ClassesDates[]> {
             fecha: res.rows.item(i).fecha,
             hora_inicio: res.rows.item(i).hora_inicio,
             hora_fin: res.rows.item(i).hora_fin,
-            estado_clase: res.rows.item(i).estado_clase
-                    })
+            estado_clase: res.rows.item(i).estado_clase,
+            id_asig_secc: res.rows.item(i).id_asig_secc
+
+                    }
+
+                    )
         }
 
       }
       this.listClassesDates.next(items);
     })
   }
+
+  searchAtendance(id) {
+  return this.database.executeSql("SELECT * FROM detalle_asist JOIN usuario USING(id_usuario) WHERE id_asistencia = (?)", [id]).then(res => {
+      let items:  Atendance[] = [];
+
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          items.push({
+              nombre: res.rows.item(i).nombre,
+            nombre_usuario: res.rows.item(i).nombre_usuario,
+            apellido:res.rows.item(i).apellido,
+            estado_asistencia:res.rows.item(i).estado_asistencia
+
+                    }
+                    )
+        }
+
+      }
+      this.listAtendance.next(items);
+    })
+  }
+
 
 
   searchUsers() {

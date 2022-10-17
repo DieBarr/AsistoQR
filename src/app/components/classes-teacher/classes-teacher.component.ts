@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 
 import { DataBaseService } from '../../services/data-base.service';
 import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-classes-teacher',
   templateUrl: './classes-teacher.component.html',
@@ -11,14 +13,20 @@ export class ClassesTeacherComponent implements OnInit {
  clases:any=[
 
   {
-       id_asistencia: '',
-            fecha:'' ,
+            id_asistencia: '',
+            fecha:'',
             hora_inicio: '',
             hora_fin:'' ,
-            estado_clase:''
+            estado_clase:'',
+            id_asig_asecc:''
   }
 ]
-  constructor( public nativeStorage: NativeStorage, private dbService: DataBaseService) { }
+  constructor( public nativeStorage: NativeStorage, private dbService: DataBaseService, private router: Router, ) { }
+ sradioChanged(id) {
+    this.nativeStorage.setItem('id_asis', id);
+    this.router.navigate(['section/class']);
+
+  }
 
   ngOnInit() {
    this.nativeStorage.getItem('subject').then((data) => {
