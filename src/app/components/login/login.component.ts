@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
   sectApi: any;
 
   subSectApi: any;
+  listApi: any;
   user: string = '';
   password: string = '';
   users: any = [
@@ -58,7 +59,15 @@ export class LoginComponent implements OnInit {
 
   }
   ngOnInit() {
+    this.dbService.dbState().subscribe(res => {
+      if (res) {
+        this.dbService.fetchUsers().subscribe(item => {
+          this.users = item;
+        }
+        )
 
+      }
+    })
     this.apirest.getUsers().subscribe((res) => {
       if (res) {
         this.usersApi = res;
@@ -99,15 +108,18 @@ export class LoginComponent implements OnInit {
     }, (error) => {
       console.log(error);
     });
-    this.dbService.dbState().subscribe(res => {
+    this.apirest.getList().subscribe((res) => {
       if (res) {
-        this.dbService.fetchUsers().subscribe(item => {
-          this.users = item;
+        this.listApi = res;
+        for (let i = 0; i < this.listApi.length; i++) {
+          this.dbService.insertApi(5, res[i].id, res[i].id_estudiante, res[i].id_asigsecci, null);
         }
-        )
-
       }
-    })
+    }, (error) => {
+      console.log(error);
+    });
+
+  
 
 
   }

@@ -8,19 +8,19 @@ import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 import { Usuario } from './usuario';
 import { AlertController, Platform, ToastController } from '@ionic/angular';
 import { AsigSecc } from './asig-secc';
-import  { AsigStudent} from './asig-student';
+import { AsigStudent } from './asig-student';
 
-import  { AsigTeacher} from './asig-teacher';
+import { AsigTeacher } from './asig-teacher';
 import { Section } from './section';
-import {ClassesDates}  from './classes-dates';
-import {Atendance} from './atendance';
+import { ClassesDates } from './classes-dates';
+import { Atendance } from './atendance';
 @Injectable({
   providedIn: 'root'
 })
 export class DataBaseService {
   public database: SQLiteObject;
   private isDBReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  id:any;
+  id: any;
   roleTable: string = "CREATE TABLE IF NOT EXISTS rol(id_rol INTEGER PRIMARY KEY AUTOINCREMENT, nombre_rol VARCHAR(32) NOT NULL);";
   userTable: string = "CREATE TABLE IF NOT EXISTS usuario(id_usuario INTEGER PRIMARY KEY AUTOINCREMENT, nombre_usuario VARCHAR(32) NOT NULL, nombre VARCHAR(32),  apellido VARCHAR(32)   , correo VARCHAR(32), clave VARCHAR(32) NOT NULL,rol_id INTEGER,  rut VARCHAR(10) , FOREIGN KEY(rol_id)  REFERENCES rol(id_rol));";
   subjectTable: string = "CREATE TABLE IF NOT EXISTS asignatura(id_asignatura INTEGER PRIMARY KEY AUTOINCREMENT, nombre_asignatura VARCHAR(128) NOT NULL, sigla_asig VARCHAR(10) NOT NULL);";
@@ -37,11 +37,11 @@ export class DataBaseService {
   listSubSect = new BehaviorSubject([]);
 
   listSubSectU = new BehaviorSubject([]);
-listSubSectUT  = new BehaviorSubject([]);
+  listSubSectUT = new BehaviorSubject([]);
 
   listAtendance = new BehaviorSubject([]);
-listClassesDates  = new BehaviorSubject([]);
-  constructor(private sqlite: SQLite, private toastController: ToastController, private platform: Platform, private alertController: AlertController, public nativeStorage: NativeStorage ) {
+  listClassesDates = new BehaviorSubject([]);
+  constructor(private sqlite: SQLite, private toastController: ToastController, private platform: Platform, private alertController: AlertController, public nativeStorage: NativeStorage) {
     this.createDB();
   }
 
@@ -52,9 +52,9 @@ listClassesDates  = new BehaviorSubject([]);
 
   insertApi(t, a, b, c, d) {
     try {
-      if (t == 1)
+      if (t == 1) {
         this.database.executeSql("INSERT or IGNORE INTO usuario (id_usuario,nombre_usuario,clave,rol_id) VALUES (?,?,?,?);", [a, b, c, d]);
-
+      }
       else if (t == 2) {
         this.database.executeSql("INSERT or IGNORE INTO asignatura (id_asignatura ,sigla_asig,nombre_asignatura) VALUES (?,?,?);", [a, b, c]);
       }
@@ -65,7 +65,9 @@ listClassesDates  = new BehaviorSubject([]);
         this.database.executeSql("INSERT or IGNORE INTO asig_secc (id_asig_secc,id_asignatura,id_seccion,profesor_id) VALUES (?,?,?,?);", [a, b, c, d]);
 
       }
-
+      else if (t == 5) {
+        this.database.executeSql("INSERT or IGNORE INTO listado (id_listado,id_usuario,id_asig_secc) VALUES (?,?,?);", [a, b, c]);
+      }
     } catch (e) {
       this.presentToast("Error sql API query" + e);
     }
@@ -105,29 +107,27 @@ listClassesDates  = new BehaviorSubject([]);
       this.searchUsers();
       this.searchSubjects();
       this.searchSections();
-
       this.searchSubSect();
       this.isDBReady.next(true);
     } catch (e) {
       this.presentToast("Error sql query" + e);
     }
   }
-  onLoginStudent(idu){
-      this.database.executeSql("INSERT or IGNORE INTO listado (id_asig_secc,id_usuario) VALUES (?,?);", [2, 2]);
-      this.searchSubjectsU(idu);
-}
-  onLoginTeacher(idu){
-      this.searchSubjectsUT(idu);
+  onLoginStudent(idu) {
+    this.searchSubjectsU(idu);
+  }
+  onLoginTeacher(idu) {
+    this.searchSubjectsUT(idu);
 
   }
-  onEnterSection(id){
+  onEnterSection(id) {
 
-    this.database.executeSql("INSERT or IGNORE INTO asistencia (id_asistencia,fecha,estado_clase,id_asig_secc) VALUES (?,?,?,?);", [id,1666002241,'en espera',id]);
-this.searchClasses(id);
+    this.database.executeSql("INSERT or IGNORE INTO asistencia (id_asistencia,fecha,estado_clase,id_asig_secc) VALUES (?,?,?,?);", [id, 1666002241, 'en espera', id]);
+    this.searchClasses(id);
 
   }
-  onEnterList(id){
-    this.database.executeSql("INSERT or IGNORE INTO detalle_asist (id_usuario,id_asistencia,estado_asistencia) VALUES (?,?,?);", [2,id,'presente']);
+  onEnterList(id) {
+    this.database.executeSql("INSERT or IGNORE INTO detalle_asist (id_usuario,id_asistencia,estado_asistencia) VALUES (?,?,?);", [2, id, 'presente']);
     this.searchAtendance(id);
   }
 
@@ -166,13 +166,13 @@ this.searchClasses(id);
   fetchSubSectU(): Observable<AsigStudent[]> {
     return this.listSubSectU.asObservable();
   }
-fetchSubSectUT(): Observable<AsigTeacher[]> {
+  fetchSubSectUT(): Observable<AsigTeacher[]> {
     return this.listSubSectUT.asObservable();
   }
-fetchClasesDates(): Observable<ClassesDates[]> {
+  fetchClasesDates(): Observable<ClassesDates[]> {
     return this.listClassesDates.asObservable();
   }
-fetchAtendance(): Observable<Atendance[]> {
+  fetchAtendance(): Observable<Atendance[]> {
     return this.listAtendance.asObservable();
   }
 
@@ -215,16 +215,12 @@ fetchAtendance(): Observable<Atendance[]> {
         }
 
       }
-      //actualizamos el observable de las noticias
       this.listSubSectU.next(items);
     })
   }
   searchSubjectsUT(idu) {
-    //retorno la ejecución del select
     return this.database.executeSql("SELECT *  FROM asig_secc JOIN asignatura  USING(id_asignatura) JOIN seccion USING(id_seccion) WHERE profesor_id = (?)", [idu]).then(res => {
-      //creo mi lista de objetos de noticias vacio
       let items: AsigTeacher[] = [];
-      //si cuento mas de 0 filas en el resultSet entonces agrego los registros al items
       if (res.rows.length > 0) {
         for (var i = 0; i < res.rows.length; i++) {
           items.push({
@@ -232,7 +228,7 @@ fetchAtendance(): Observable<Atendance[]> {
             nombre_asig: res.rows.item(i).nombre_asignatura,
             sigla_asig: res.rows.item(i).sigla_asig,
             sigla_secc: res.rows.item(i).sigla_secc,
-            id_asig_secc:res.rows.item(i).id_asig_secc
+            id_asig_secc: res.rows.item(i).id_asig_secc
           })
         }
 
@@ -285,7 +281,7 @@ fetchAtendance(): Observable<Atendance[]> {
     })
   }
   searchClasses(id) {
-  return this.database.executeSql("SELECT id_asistencia,  fecha, hora_fin, estado_clase, id_asig_secc FROM asistencia WHERE id_asig_secc = (?)", [id]).then(res => {
+    return this.database.executeSql("SELECT id_asistencia,  fecha, hora_fin, estado_clase, id_asig_secc FROM asistencia WHERE id_asig_secc = (?)", [id]).then(res => {
       let items: ClassesDates[] = [];
 
       if (res.rows.length > 0) {
@@ -298,9 +294,9 @@ fetchAtendance(): Observable<Atendance[]> {
             estado_clase: res.rows.item(i).estado_clase,
             id_asig_secc: res.rows.item(i).id_asig_secc
 
-                    }
+          }
 
-                    )
+          )
         }
 
       }
@@ -309,19 +305,19 @@ fetchAtendance(): Observable<Atendance[]> {
   }
 
   searchAtendance(id) {
-  return this.database.executeSql("SELECT * FROM detalle_asist JOIN usuario USING(id_usuario) WHERE id_asistencia = (?)", [id]).then(res => {
-      let items:  Atendance[] = [];
+    return this.database.executeSql("SELECT * FROM detalle_asist JOIN usuario USING(id_usuario) WHERE id_asistencia = (?)", [id]).then(res => {
+      let items: Atendance[] = [];
 
       if (res.rows.length > 0) {
         for (var i = 0; i < res.rows.length; i++) {
           items.push({
-              nombre: res.rows.item(i).nombre,
+            nombre: res.rows.item(i).nombre,
             nombre_usuario: res.rows.item(i).nombre_usuario,
-            apellido:res.rows.item(i).apellido,
-            estado_asistencia:res.rows.item(i).estado_asistencia
+            apellido: res.rows.item(i).apellido,
+            estado_asistencia: res.rows.item(i).estado_asistencia
 
-                    }
-                    )
+          }
+          )
         }
 
       }
