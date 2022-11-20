@@ -13,7 +13,7 @@ exports.config = {
     './src/**/*.e2e-spec.ts'
   ],
   capabilities: {
-    browserName: 'firefox',
+    browserName: 'chrome',
     marionete: true
   },
   directConnect: true,
