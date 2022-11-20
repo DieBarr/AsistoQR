@@ -13,7 +13,8 @@ exports.config = {
     './src/**/*.e2e-spec.ts'
   ],
   capabilities: {
-    browserName: 'chrome'
+    browserName: 'firefox',
+    marionete: true
   },
   directConnect: true,
   SELENIUM_PROMISE_MANAGER: false,
