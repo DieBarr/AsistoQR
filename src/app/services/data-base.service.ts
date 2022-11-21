@@ -104,6 +104,10 @@ export class DataBaseService {
         this.searchSubjectsUT(idu);
 
     }
+    onScanStudent(clase,user){
+
+        this.database.executeSql("INSERT or IGNORE INTO detalle_asist (id_usuario,id_asistencia,estado_asistencia) VALUES (?,?,?);", [user,clase, 'presente']);
+    }
     onEnterSection(id) {
 
         this.database.executeSql("INSERT or IGNORE INTO asistencia (id_asistencia,fecha,estado_clase,id_asig_secc) VALUES (?,?,?,?);", [id, 1666002241, 'en espera', id]);
@@ -111,7 +115,6 @@ export class DataBaseService {
 
     }
     onEnterList(id) {
-        this.database.executeSql("INSERT or IGNORE INTO detalle_asist (id_usuario,id_asistencia,estado_asistencia) VALUES (?,?,?);", [2, id, 'presente']);
         this.searchAtendance(id);
     }
 

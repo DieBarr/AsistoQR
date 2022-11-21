@@ -22,7 +22,7 @@ export class ScannerComponent implements OnInit {
     rol_id: '',
     rut: ''
 }]
-
+id='';
 constructor(private camera: CameraService, public nativeStorage: NativeStorage, private dbService : DataBaseService) {
     this.camera.tomarFoto();
  }
@@ -38,12 +38,15 @@ document.querySelector('body').classList.add('scanner-active');
   // if the result has content
   if (result.hasContent) {
     this.scannedResult = result.content;
+    let resultInt =  parseInt(this.scannedResult.charAt(0));
+    this.dbService.onScanStudent(resultInt,this.id);
     console.log(result.content); // log the raw scanned content
   }
 };
   ngOnInit() {
     this.nativeStorage.getItem('id').then((data)=>{
       this.dbService.onLoginStudent(data);
+      this.id = data;
     })
 
     this.dbService.dbState().subscribe(res => {
