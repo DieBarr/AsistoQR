@@ -1,9 +1,7 @@
 <ion-content >
   <ion-list>
     <ion-list-header>
-      <ion-label>
-        Secciones
-      </ion-label>
+      <ion-label>Secciones</ion-label>
     </ion-list-header>
      <ion-item *ngFor="let s of subjects">
             <ion-label color="primary" [routerLink]="['/section']" style="word-wrap: break-word;white-space: normal;" (click)="[toSection(s)]">{{ s.nombre_asig }} {{  s.sigla_asig }} {{  s.sigla_secc }}<br>

@@ -111,7 +111,7 @@ export class DataBaseService {
     onEnterSection(id) {
 
         this.database.executeSql("INSERT or IGNORE INTO asistencia (id_asistencia,fecha,estado_clase,id_asig_secc) VALUES (?,?,?,?);", [id, 1666002241, 'en espera', id]);
-        this.searchClasses(id);
+                this.searchClasses(id);
 
     }
     onEnterList(id) {
@@ -263,7 +263,7 @@ export class DataBaseService {
     }
 
     searchAtendance(id) {
-        return this.database.executeSql("SELECT DISTINCT * FROM listado JOIN usuario USING(id_usuario) JOIN detalle_asist USING(id_usuario) JOIN asistencia USING(id_asistencia) WHERE id_asistencia = (?)", [id]).then(res => {
+        return this.database.executeSql("SELECT * FROM detalle_asist JOIN usuario USING(id_usuario) WHERE id_asistencia = (?)", [id]).then(res => {
             let items: Atendance[] = [];
 
             if (res.rows.length > 0) {

@@ -9,8 +9,8 @@
  <ion-radio-group value="1">
 <ion-item *ngFor="let a of clases">
        <ion-label>
-              <h2 style="font-weight:bolder;">{{ a.fecha }}</h2>
-              <h3 style="font-weight:bold;" >Estado:<ion-chip color="warning" class="ion-align-items-end">{{ a.estado_clase  }}</ion-chip></h3>
+              <h2 style="font-weight:bolder;">{{ a.fecha  | date:'longDate'  }}</h2>
+              <h3 style="font-weight:bold;" >Estado:<ion-chip color="warning" class="ion-align-items-end">{{ a.estado_clase }}</ion-chip></h3>
               <p>I've got enough on my plate as it is, and I...</p>
             </ion-label>
       <ion-radio slot="end" (click)="[sradioChanged(a.id_asistencia)]"></ion-radio>
