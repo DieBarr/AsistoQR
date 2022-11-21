@@ -1,7 +1,5 @@
 import { browser, by, element } from 'protractor';
 describe('Login test',()=>{
-
-
     beforeEach(()=>{
     browser.get('/');
     });

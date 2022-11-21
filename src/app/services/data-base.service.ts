@@ -117,7 +117,7 @@ export class DataBaseService {
 
     createDB() { // verificamos que la plataforma este lista
         this.platform.ready().then(() => { // creamos la BD
-            this.sqlite.create({name: 'bdasistoqr.db', location: 'default'}).then((db : SQLiteObject) => { // guardamos la conexion a la BD en la variable propia
+            this.sqlite.create({name: 'bdasistoqr.db', location: 'default'}).then((db : SQLiteObject) => {
                 this.database = db;
                 // llamar a la funcion para crear las tablas
                 this.createTables();
