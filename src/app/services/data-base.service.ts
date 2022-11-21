@@ -22,7 +22,7 @@ export class DataBaseService {
     subjSectTable : string = "CREATE TABLE IF NOT EXISTS asig_secc(id_asig_secc INTEGER PRIMARY KEY autoincrement, id_asignatura INTEGER NOT NULL, id_seccion INTEGER NOT NULL,  profesor_id INTEGER NOT NULL, FOREIGN KEY(id_seccion) REFERENCES seccion(id_seccion), FOREIGN KEY(id_asignatura) REFERENCES asignatura(id_asignatura), FOREIGN KEY(profesor_id) REFERENCES usuario(id_usuario));";
     listTable : string = "CREATE TABLE IF NOT EXISTS listado(id_listado INTEGER PRIMARY KEY autoincrement, estado VARCHAR(15), id_asig_secc INTEGER NOT NULL, id_usuario INTEGER NOT NULL, FOREIGN KEY(id_asig_secc) REFERENCES asig_secc(id_asig_secc) , FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario));";
     assistenceTable : string = "CREATE TABLE IF NOT EXISTS asistencia(id_asistencia INTEGER PRIMARY KEY autoincrement,estado_clase VARCHAR(15), fecha DATE , qr BLOB, hora_inicio DATETIME, hora_fin DATETIME, id_asig_secc INTEGER NOT NULL, FOREIGN KEY(id_asig_secc) REFERENCES asig_secc(id_asig_secc));";
-    detailAssistTable : string = "CREATE TABLE IF NOT EXISTS detalle_asist(id_detalle INTEGER PRIMARY KEY autoincrement,estado_asistencia VARCHAR(15), id_asistencia INTEGER NOT NULL,id_usuario INTEGER NOT NULL,  FOREIGN KEY(id_asistencia) REFERENCES asistencia(id_asistencia), FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario));";
+    detailAssistTable : string = "CREATE TABLE IF NOT EXISTS detalle_asist(id_detalle INTEGER PRIMARY KEY autoincrement,estado_asistencia VARCHAR(5), id_asistencia INTEGER NOT NULL,id_usuario INTEGER NOT NULL,  FOREIGN KEY(id_asistencia) REFERENCES asistencia(id_asistencia), FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario));";
     listSubject = new BehaviorSubject([]);
     listUser = new BehaviorSubject([]);
 
@@ -263,7 +263,7 @@ export class DataBaseService {
     }
 
     searchAtendance(id) {
-        return this.database.executeSql("SELECT * FROM detalle_asist JOIN usuario USING(id_usuario) WHERE id_asistencia = (?)", [id]).then(res => {
+        return this.database.executeSql("SELECT DISTINCT * FROM listado JOIN usuario USING(id_usuario) JOIN detalle_asist USING(id_usuario) JOIN asistencia USING(id_asistencia) WHERE id_asistencia = (?)", [id]).then(res => {
             let items: Atendance[] = [];
 
             if (res.rows.length > 0) {
