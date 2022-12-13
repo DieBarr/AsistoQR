@@ -27,7 +27,7 @@ export class ClassTeacherComponent implements OnInit {
 
     }
   ]
-
+  asistencia : any;
   constructor(private alertController: AlertController, private router: Router, public nativeStorage: NativeStorage, private dbService: DataBaseService) {
 
 
@@ -49,8 +49,8 @@ export class ClassTeacherComponent implements OnInit {
           text: 'OK',
           role: 'confirm',
           handler: () => {
-            this.nativeStorage.setItem('qrIdAsis', this.id_asis);
-            this.nativeStorage.setItem('qrAsigSecc', this.idAsigSecc);
+            this.nativeStorage.setItem('asistencia', this.asistencia);
+ 
             this.router.navigate(['qr-code-teacher']);
           },
         },
@@ -64,14 +64,9 @@ export class ClassTeacherComponent implements OnInit {
   }
   ngOnInit() {
 
-    this.nativeStorage.getItem('id_asis').then((data) => {
-      this.dbService.onEnterList(data);
-      this.id_asis = data;
-    })
-
-    this.nativeStorage.getItem('idAsigSecc').then((data) => {
-
-      this.idAsigSecc = data;
+    this.nativeStorage.getItem('asistencia').then((data) => {
+      this.dbService.onEnterList(data.id_asistencia);
+      this.asistencia = data;
     })
     this.dbService.dbState().subscribe(res => {
       if (res) {

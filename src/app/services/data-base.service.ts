@@ -15,6 +15,7 @@ import {Atendance} from './atendance';
 export class DataBaseService {
     public database : SQLiteObject;
     id : any;
+    boolLista: boolean;
     roleTable : string = "CREATE TABLE IF NOT EXISTS rol(id_rol INTEGER PRIMARY KEY AUTOINCREMENT, nombre_rol VARCHAR(32) NOT NULL);";
     userTable : string = "CREATE TABLE IF NOT EXISTS usuario(id_usuario INTEGER PRIMARY KEY AUTOINCREMENT, nombre_usuario VARCHAR(32) NOT NULL, nombre VARCHAR(32),  apellido VARCHAR(32)   , correo VARCHAR(32), clave VARCHAR(32) NOT NULL,rol_id INTEGER,  rut VARCHAR(10) , FOREIGN KEY(rol_id)  REFERENCES rol(id_rol));";
     subjectTable : string = "CREATE TABLE IF NOT EXISTS asignatura(id_asignatura INTEGER PRIMARY KEY AUTOINCREMENT, nombre_asignatura VARCHAR(128) NOT NULL, sigla_asig VARCHAR(10) NOT NULL);";
@@ -104,10 +105,15 @@ export class DataBaseService {
         this.searchSubjectsUT(idu);
 
     }
-    onScanStudent(clase,user){
-	this.checkUserList(clase,user);
+    onScanStudent(clase,asigsecc,user){
+    this.checkUserList(asigsecc,user);
+	if(this.boolLista == true){
          this.database.executeSql("INSERT or IGNORE INTO detalle_asist (id_usuario,id_asistencia,estado_asistencia) VALUES (?,?,?);", [user,clase, 'presente']);
-    }
+     }else{
+this.presentToast("No estas en la lista.");
+
+     }
+        }
     onEnterSection(id) {
 
         this.database.executeSql("INSERT or IGNORE INTO asistencia (id_asistencia,fecha,estado_clase,id_asig_secc) VALUES (?,?,?,?);", [id, 1666002241, 'en espera', id]);
@@ -205,24 +211,18 @@ export class DataBaseService {
     }
 
 
-    checkUserList(idList,idUser) {
-        return this.database.executeSql("SELECT *  FROM listado WHERE id_listado = (?) AND id_usuario (?)", [idList,idUser]).then(res => {
-            let items: AsigTeacher[] = [];
+    checkUserList(idAsigSecc,idUser) {
+        let result;
+         this.database.executeSql("SELECT *  FROM listado WHERE id_usuario = (?) AND id_asig_secc = (?)", [idUser,idAsigSecc]).then(res => {
             if (res.rows.length > 0) {
-                for (var i = 0; i < res.rows.length; i++) {
-                    items.push({
-                        profesor_id: res.rows.item(i).profesor_id,
-                        nombre_asig: res.rows.item(i).nombre_asignatura,
-                        sigla_asig: res.rows.item(i).sigla_asig,
-                        sigla_secc: res.rows.item(i).sigla_secc,
-                        id_asig_secc: res.rows.item(i).id_asig_secc
-                    })
-                }
-
+               this.boolLista = true;
             }
-            // actualizamos el observable de las noticias
-            this.listSubSectUT.next(items);
+            else {
+            this.boolLista = false;
+            }
+       
         })
+   
     }
 
 

@@ -7,23 +7,15 @@ import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 })
 export class QrCodeTeacherPage implements OnInit {
 qrClase='';
-idAsis='';
-idAsigSecc='';
+
   constructor(public nativeStorage: NativeStorage) { }
   ngOnInit() {
-    this.nativeStorage.getItem('qrIdAsis').then((data) => {
+    this.nativeStorage.getItem('asistencia').then((data) => {
       //this.qrClase = data + 'clase';
-      this.idAsis = data;
-    
+    this.qrClase = 'asis' + data.id+ 'clase' + data.idAsigSecc + 'asigSecc';
     })
-    this.nativeStorage.getItem('qrAsigSecc').then((data) => {
-      //this.qrClase = data + 'clase';
-      this.idAsigSecc = data;
-    
-    })
-    if(this.idAsigSecc != '' && this.idAsis != ''){
-      this.qrClase = this.idAsis + 'clase' + this.idAsigSecc;
-    }
+
+   
   }
 
 }

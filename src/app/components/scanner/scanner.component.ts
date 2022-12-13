@@ -38,8 +38,11 @@ document.querySelector('body').classList.add('scanner-active');
   // if the result has content
   if (result.hasContent) {
     this.scannedResult = result.content;
-    let resultInt =  parseInt(this.scannedResult.charAt(0));
-    this.dbService.onScanStudent(resultInt,this.id);
+
+    let qrRegEx = /asis([0-9+])clase([0-9]+)asigSecc/;
+    let match = result.content.match(qrRegEx);
+  
+    this.dbService.onScanStudent(match[1],match[2],this.id);
     console.log(result.content); // log the raw scanned content
   }
 };

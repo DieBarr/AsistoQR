@@ -23,9 +23,9 @@
     }
   ]
     constructor( public nativeStorage: NativeStorage, private dbService: DataBaseService, private router: Router, ) { }
-sradioChanged(id,idAsigSecc) {
-    this.nativeStorage.setItem('id_asis',id);
-    this.nativeStorage.setItem('idAsigSecc',idAsigSecc);
+sradioChanged(a) {
+    this.nativeStorage.setItem('asistencia',{id: a.id_asistencia,idAsigSecc:a.id_asig_secc});
+
        this.router.navigate(['section/class']);
 
   }
@@ -33,8 +33,6 @@ sradioChanged(id,idAsigSecc) {
     ngOnInit() {
      this.nativeStorage.getItem('subject').then((data) => {
       this.dbService.onEnterSection(data.id_asig_secc);
-	 this.idAsigSecc = data.id_asig_secc;
-
       })
 
     this.dbService.dbState().subscribe(res => {
