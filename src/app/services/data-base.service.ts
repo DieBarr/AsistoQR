@@ -105,8 +105,8 @@ export class DataBaseService {
 
     }
     onScanStudent(clase,user){
-
-        this.database.executeSql("INSERT or IGNORE INTO detalle_asist (id_usuario,id_asistencia,estado_asistencia) VALUES (?,?,?);", [user,clase, 'presente']);
+	this.checkUserList(clase,user);
+         this.database.executeSql("INSERT or IGNORE INTO detalle_asist (id_usuario,id_asistencia,estado_asistencia) VALUES (?,?,?);", [user,clase, 'presente']);
     }
     onEnterSection(id) {
 
@@ -186,6 +186,27 @@ export class DataBaseService {
     }
     searchSubjectsUT(idu) {
         return this.database.executeSql("SELECT *  FROM asig_secc JOIN asignatura  USING(id_asignatura) JOIN seccion USING(id_seccion) WHERE profesor_id = (?)", [idu]).then(res => {
+            let items: AsigTeacher[] = [];
+            if (res.rows.length > 0) {
+                for (var i = 0; i < res.rows.length; i++) {
+                    items.push({
+                        profesor_id: res.rows.item(i).profesor_id,
+                        nombre_asig: res.rows.item(i).nombre_asignatura,
+                        sigla_asig: res.rows.item(i).sigla_asig,
+                        sigla_secc: res.rows.item(i).sigla_secc,
+                        id_asig_secc: res.rows.item(i).id_asig_secc
+                    })
+                }
+
+            }
+            // actualizamos el observable de las noticias
+            this.listSubSectUT.next(items);
+        })
+    }
+
+
+    checkUserList(idList,idUser) {
+        return this.database.executeSql("SELECT *  FROM listado WHERE id_listado = (?) AND id_usuario (?)", [idList,idUser]).then(res => {
             let items: AsigTeacher[] = [];
             if (res.rows.length > 0) {
                 for (var i = 0; i < res.rows.length; i++) {
